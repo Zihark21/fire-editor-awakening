@@ -1,4 +1,4 @@
-package com.danius.fireeditor.data;
+﻿package com.danius.fireeditor.data;
 
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.data.model.ClassModel;
@@ -62,8 +62,6 @@ public class SkillDb {
         allSkills.addAll(personalSkills);
         allSkills.addAll(itemSkills);
         allSkills.addAll(inheritClassSkills);
-        allSkills.addAll(inheritExclusiveFather);
-        allSkills.addAll(inheritExclusiveMother);
 
 
         return removeDuplicates(allSkills);

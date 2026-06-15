@@ -1,5 +1,5 @@
 package com.danius.fireeditor.controllers.unit;
-
+ 
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.data.ClassDb;
 import com.danius.fireeditor.data.SkillDb;
@@ -16,31 +16,37 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-
+ 
+import java.util.ArrayList;
 import java.util.List;
-
+ 
 import static com.danius.fireeditor.data.SkillDb.*;
-
+ 
 public class SkillController {
-
+ 
     @FXML
     private AnchorPane checkboxAnchorPane;
     @FXML
     private ComboBox<String> comboSkill1, comboSkill2, comboSkill3, comboSkill4, comboSkill5;
     @FXML
-    private Label lblCount;
+    private ComboBox<String> comboFatherSkill, comboMotherSkill;
+    @FXML
+    private Label lblCount, lblFather, lblMother;
     private Unit unit;
     private static final int NUM_COLUMNS = 5;
     private static final int TOTAL_CHECKBOXES = 104;
     private static final int NUM_FULL_ROWS = TOTAL_CHECKBOXES / NUM_COLUMNS;
     private static final int NUM_LAST_ROW_CHECKBOXES = TOTAL_CHECKBOXES % NUM_COLUMNS;
     private final CheckBox[] checkboxes = new CheckBox[TOTAL_CHECKBOXES];
-
+    private final List<Integer> fatherSkillIds = new ArrayList<>();
+    private final List<Integer> motherSkillIds = new ArrayList<>();
+    private boolean updatingDropdown = false;
+ 
     public void initialize() {
         generateCheckboxes();
         generateComboboxes();
     }
-
+ 
     public void setUnit(Unit unit) {
         this.unit = unit;
         for (int i = 0; i < checkboxes.length; i++) {
@@ -52,8 +58,10 @@ public class SkillController {
         comboSkill3.getSelectionModel().select(activeSkills[2]);
         comboSkill4.getSelectionModel().select(activeSkills[3]);
         comboSkill5.getSelectionModel().select(activeSkills[4]);
+        setupInheritComboboxes();
+        syncInheritDropdowns();
     }
-
+ 
     public void setAllLegal() {
         unit.setLegalSkills();
         String rawString = unit.rawSkill.skillString;
@@ -63,20 +71,22 @@ public class SkillController {
         for (int i = 0; i < checkboxes.length; i++) {
             if (rawString.charAt(i) == '1') checkboxes[i].setSelected(true);
         }
+        //Re-apply inherited skills selected in dropdowns
+        applyInheritSelections();
         unselectActive();
     }
-
+ 
     public void setAll() {
         for (int i = 0; i < checkboxes.length; i++) {
             if (i != 0 && i != checkboxes.length - 1) checkboxes[i].setSelected(true);
         }
     }
-
+ 
     public void unsetAll() {
         for (CheckBox checkbox : checkboxes) checkbox.setSelected(false);
         unselectActive();
     }
-
+ 
     public void unselectActive() {
         List<Integer> skills = unit.rawSkill.getLearnedSkills();
         if (!skills.contains(comboSkill1.getSelectionModel().getSelectedIndex()))
@@ -90,7 +100,7 @@ public class SkillController {
         if (!skills.contains(comboSkill5.getSelectionModel().getSelectedIndex()))
             comboSkill5.getSelectionModel().select(0);
     }
-
+ 
     private void generateComboboxes() {
         ObservableList<String> skills = FXCollections.observableArrayList(SkillDb.getSkillNames());
         comboSkill1.setItems(skills);
@@ -104,7 +114,7 @@ public class SkillController {
         addComboListeners(comboSkill4, 3);
         addComboListeners(comboSkill5, 4);
     }
-
+ 
     private void addComboListeners(ComboBox<String> comboBox, int slot) {
         comboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (unit != null) {
@@ -114,15 +124,151 @@ public class SkillController {
             }
         });
     }
-
+ 
+    private void setupInheritComboboxes() {
+        fatherSkillIds.clear();
+        motherSkillIds.clear();
+ 
+        boolean isChild = unit != null && unit.rawChild != null;
+        comboFatherSkill.setDisable(!isChild);
+        comboMotherSkill.setDisable(!isChild);
+        lblFather.setDisable(!isChild);
+        lblMother.setDisable(!isChild);
+ 
+        if (!isChild) {
+            comboFatherSkill.setItems(FXCollections.observableArrayList("None"));
+            comboMotherSkill.setItems(FXCollections.observableArrayList("None"));
+            comboFatherSkill.getSelectionModel().select(0);
+            comboMotherSkill.getSelectionModel().select(0);
+            return;
+        }
+ 
+        List<SkillModel> fatherSkills = getExclusiveInheritSlotSkills(unit, 0);
+        List<SkillModel> motherSkills = getExclusiveInheritSlotSkills(unit, 1);
+ 
+        ObservableList<String> fatherNames = FXCollections.observableArrayList();
+        fatherNames.add("None");
+        fatherSkillIds.add(-1);
+        for (SkillModel skill : fatherSkills) {
+            fatherNames.add(skill.getName());
+            fatherSkillIds.add(skill.getId());
+        }
+        comboFatherSkill.setItems(fatherNames);
+ 
+        ObservableList<String> motherNames = FXCollections.observableArrayList();
+        motherNames.add("None");
+        motherSkillIds.add(-1);
+        for (SkillModel skill : motherSkills) {
+            motherNames.add(skill.getName());
+            motherSkillIds.add(skill.getId());
+        }
+        comboMotherSkill.setItems(motherNames);
+ 
+        addInheritListeners();
+    }
+ 
+    private void syncInheritDropdowns() {
+        if (unit == null || unit.rawChild == null) return;
+        updatingDropdown = true;
+ 
+        //Find currently learned skills that belong to each parent's exclusive list
+        List<Integer> learned = unit.rawSkill.getLearnedSkills();
+ 
+        int fatherSelected = 0;
+        int foundFather = 0;
+        for (int i = 1; i < fatherSkillIds.size(); i++) {
+            if (learned.contains(fatherSkillIds.get(i))) {
+                fatherSelected = i;
+                foundFather++;
+            }
+        }
+        comboFatherSkill.getSelectionModel().select(foundFather == 1 ? fatherSelected : 0);
+ 
+        int motherSelected = 0;
+        int foundMother = 0;
+        for (int i = 1; i < motherSkillIds.size(); i++) {
+            if (learned.contains(motherSkillIds.get(i))) {
+                motherSelected = i;
+                foundMother++;
+            }
+        }
+        comboMotherSkill.getSelectionModel().select(foundMother == 1 ? motherSelected : 0);
+ 
+        updatingDropdown = false;
+    }
+ 
+    private void addInheritListeners() {
+        comboFatherSkill.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+            if (unit == null || updatingDropdown) return;
+            int oldIndex = oldVal.intValue();
+            int newIndex = newVal.intValue();
+            if (oldIndex >= 0 && oldIndex < fatherSkillIds.size()) {
+                int oldSkill = fatherSkillIds.get(oldIndex);
+                if (oldSkill >= 0) {
+                    //Only uncheck if mother dropdown doesn't also have this skill selected
+                    int motherIndex = comboMotherSkill.getSelectionModel().getSelectedIndex();
+                    if (motherIndex < 0 || motherIndex >= motherSkillIds.size() || motherSkillIds.get(motherIndex) != oldSkill) {
+                        checkboxes[oldSkill].setSelected(false);
+                    }
+                }
+            }
+            if (newIndex >= 0 && newIndex < fatherSkillIds.size()) {
+                int newSkill = fatherSkillIds.get(newIndex);
+                if (newSkill >= 0) {
+                    checkboxes[newSkill].setSelected(true);
+                }
+            }
+            setCount();
+            unselectActive();
+        });
+ 
+        comboMotherSkill.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+            if (unit == null || updatingDropdown) return;
+            int oldIndex = oldVal.intValue();
+            int newIndex = newVal.intValue();
+            if (oldIndex >= 0 && oldIndex < motherSkillIds.size()) {
+                int oldSkill = motherSkillIds.get(oldIndex);
+                if (oldSkill >= 0) {
+                    //Only uncheck if father dropdown doesn't also have this skill selected
+                    int fatherIndex = comboFatherSkill.getSelectionModel().getSelectedIndex();
+                    if (fatherIndex < 0 || fatherIndex >= fatherSkillIds.size() || fatherSkillIds.get(fatherIndex) != oldSkill) {
+                        checkboxes[oldSkill].setSelected(false);
+                    }
+                }
+            }
+            if (newIndex >= 0 && newIndex < motherSkillIds.size()) {
+                int newSkill = motherSkillIds.get(newIndex);
+                if (newSkill >= 0) {
+                    checkboxes[newSkill].setSelected(true);
+                }
+            }
+            setCount();
+            unselectActive();
+        });
+    }
+ 
+    private void applyInheritSelections() {
+        if (unit == null || unit.rawChild == null) return;
+        int fatherIndex = comboFatherSkill.getSelectionModel().getSelectedIndex();
+        if (fatherIndex > 0 && fatherIndex < fatherSkillIds.size()) {
+            int skillId = fatherSkillIds.get(fatherIndex);
+            if (skillId >= 0) checkboxes[skillId].setSelected(true);
+        }
+        int motherIndex = comboMotherSkill.getSelectionModel().getSelectedIndex();
+        if (motherIndex > 0 && motherIndex < motherSkillIds.size()) {
+            int skillId = motherSkillIds.get(motherIndex);
+            if (skillId >= 0) checkboxes[skillId].setSelected(true);
+        }
+    }
+ 
     private void generateCheckboxes() {
         // Calculate the width and height of each checkbox based on the AnchorPane size
         // Calculate the width and height of each checkbox based on the AnchorPane size
         double checkboxWidth = checkboxAnchorPane.getPrefWidth() / NUM_COLUMNS;
         double checkboxHeight = checkboxAnchorPane.getPrefHeight() / NUM_FULL_ROWS;
-
+ 
         int checkboxCount = 0;
-
+ 
         for (int row = 0; row < NUM_FULL_ROWS; row++) {
             for (int col = 0; col < NUM_COLUMNS; col++) {
                 CheckBox checkBox = createCheckbox(checkboxCount, col * checkboxWidth, row * checkboxHeight);
@@ -131,7 +277,7 @@ public class SkillController {
                 checkboxCount++;
             }
         }
-
+ 
         // Add the checkboxes for the last row
         double lastRowY = NUM_FULL_ROWS * checkboxHeight;
         for (int col = 0; col < NUM_LAST_ROW_CHECKBOXES; col++) {
@@ -141,7 +287,7 @@ public class SkillController {
             checkboxCount++;
         }
     }
-
+ 
     private CheckBox createCheckbox(int checkboxCount, double x, double y) {
         CheckBox checkBox = new CheckBox();
         checkBox.setLayoutX(x);
@@ -150,7 +296,7 @@ public class SkillController {
         addCheckboxListener(checkBox, checkboxCount);
         return checkBox;
     }
-
+ 
     // Method to add a listener to a checkbox
     public void addCheckboxListener(CheckBox checkbox, int slot) {
         checkbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -160,11 +306,11 @@ public class SkillController {
             }
         });
     }
-
+ 
     public void setCount() {
         lblCount.setText("Learned Skills: " + unit.rawSkill.skillCount());
     }
-
+ 
     @FXML
     private void skillReport() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -172,7 +318,7 @@ public class SkillController {
         int itemsPerRow = 8;
         alert.setTitle("Legal Skills");
         alert.setHeaderText("Available skills for " + unit.unitName() + ":");
-
+ 
         List<SkillModel> baseSkills = getSkillsFromBaseClasses(unit);
         StringBuilder contentText = new StringBuilder("Base Skills:\n");
         for (int i = 0; i < baseSkills.size(); i++) {
@@ -181,7 +327,7 @@ public class SkillController {
             else contentText.append(", ");
         }
         contentText.append("\n");
-
+ 
         List<SkillModel> personalSkills = getPersonalSkills(unit);
         contentText.append("Personal Skills:\n");
         for (int i = 0; i < personalSkills.size(); i++) {
@@ -190,7 +336,7 @@ public class SkillController {
             else contentText.append(", ");
         }
         contentText.append("\n");
-
+ 
         List<SkillModel> itemSkills = getItemSkills();
         contentText.append("Item Skills:\n");
         for (int i = 0; i < itemSkills.size(); i++) {
@@ -199,9 +345,9 @@ public class SkillController {
             else contentText.append(", ");
         }
         contentText.append("\n");
-
+ 
         if (unit.rawChild != null) {
-
+ 
             List<SkillModel> inheritClassSkills = getExclusiveInheritClassSkills(unit);
             contentText.append("Exclusive skills from Inherited Classes:\n");
             for (int i = 0; i < inheritClassSkills.size(); i++) {
@@ -211,7 +357,7 @@ public class SkillController {
                 else contentText.append(", ");
             }
             contentText.append("\n");
-
+ 
             int father = unit.rawChild.parentId(0);
             if (father != 0xFFFF) {
                 List<SkillModel> inheritExclusiveFather = getExclusiveInheritSlotSkills(unit, 0);
@@ -225,7 +371,7 @@ public class SkillController {
                 }
                 contentText.append("\n");
             }
-
+ 
             int mother = unit.rawChild.parentId(1);
             if (mother != 0xFFFF) {
                 List<SkillModel> inheritExclusiveMother = getExclusiveInheritSlotSkills(unit, 1);
@@ -238,9 +384,9 @@ public class SkillController {
                     else contentText.append(", ");
                 }
             }
-
+ 
         }
-
+ 
         alert.setContentText(contentText.toString());
         alert.showAndWait();
     }
