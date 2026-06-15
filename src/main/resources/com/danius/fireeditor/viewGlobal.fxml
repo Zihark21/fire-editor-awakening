@@ -15,7 +15,7 @@
 
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="787.0">
       <children>
-         <Button layoutX="545.0" layoutY="331.0" mnemonicParsing="false" onAction="#changeRegion" prefHeight="49.0" prefWidth="174.0" text="Change Save File Region" />
+         <Button layoutX="545.0" layoutY="331.0" mnemonicParsing="false" onAction="#saveFile" prefHeight="49.0" prefWidth="174.0" text="Save File" />
          <ListView fx:id="listViewUnit" layoutX="14.0" layoutY="29.0" prefHeight="354.0" prefWidth="134.0" />
          <Label fx:id="lblUnitCount" layoutX="16.0" layoutY="7.0" prefHeight="18.0" prefWidth="133.0" text="Units" />
          <Button fx:id="btnUp" layoutX="157.0" layoutY="324.0" mnemonicParsing="false" onAction="#orderUp" text="↑" />

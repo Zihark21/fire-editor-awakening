@@ -11,9 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GlobalController {
     private Global global;
@@ -118,12 +125,12 @@ public class GlobalController {
     public void setPortrait() {
         UnitDu unitDu = listViewUnit.getSelectionModel().getSelectedItem();
         if (unitDu != null) {
-            Unit unit = unitDu.toUnit();
-            Image[] portrait = Portrait.setImage(unit);
-            imgBuild.setImage(portrait[0]);
-            imgHairColor.setImage(portrait[1]);
-            imgHair.setImage(portrait[2]);
-            labelUnitName.setText(unit.unitName());
+                Unit unit = unitDu.toUnit();
+                Image[] portrait = Portrait.setImage(unit);
+                imgBuild.setImage(portrait[0]);
+                imgHairColor.setImage(portrait[1]);
+                imgHair.setImage(portrait[2]);
+                labelUnitName.setText(unit.unitName());
         } else {
             imgBuild.setImage(null);
             imgHairColor.setImage(null);
@@ -164,6 +171,84 @@ public class GlobalController {
         alert.setHeaderText(null);
         alert.setContentText("All the Support Log and Unit Gallery entries have been unlocked!");
         alert.showAndWait();
+    }
+
+    public void saveFile() {
+        if (global == null) return;
+        
+        // Update the unit list before saving
+        updateUnits();
+        
+        // Create file chooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(MainController.path));
+        
+        // Show save dialog
+        File file = fileChooser.showSaveDialog(null);
+        if (file == null) return;
+        
+        try {
+            // Create backup
+            createBackup();
+            
+            // Get the compressed bytes
+            byte[] data = global.getBytesComp();
+            
+            // Save to file
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(data);
+            }
+            
+            // Update the backup file reference
+            MainController.backupFile = file;
+            MainController.path = file.getParent();
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("File saved successfully!");
+            alert.showAndWait();
+            
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Error saving file: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    
+    private void createBackup() throws IOException {
+        if (MainController.backupFile == null) return;
+        
+        // Create the "bak" folder if it doesn't exist
+        String userDir = System.getProperty("user.dir");
+        File bakFolder = new File(userDir, "bak");
+        if (!bakFolder.exists()) {
+            boolean created = bakFolder.mkdir();
+            if (!created) {
+                System.err.println("Failed to create 'bak' directory.");
+                return;
+            }
+        }
+        
+        // Generate a timestamp for the filename
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = dateFormat.format(new Date());
+        
+        // Get the original filename
+        String originalFilename = MainController.backupFile.getName();
+        
+        // Create the backup file path with the timestamp and original filename
+        String backupFilePath = bakFolder.getAbsolutePath() + File.separator + timestamp + "_" + originalFilename;
+        
+        // Read content from the backupFile and write to the backup file
+        try (FileInputStream fis = new FileInputStream(MainController.backupFile);
+             FileOutputStream fos = new FileOutputStream(backupFilePath)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+        }
     }
 
 }
