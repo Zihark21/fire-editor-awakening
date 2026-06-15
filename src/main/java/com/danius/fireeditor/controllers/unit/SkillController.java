@@ -152,6 +152,17 @@ public class SkillController {
  
         List<SkillModel> fatherSkills = getExclusiveInheritSlotSkills(unit, 0);
         List<SkillModel> motherSkills = getExclusiveInheritSlotSkills(unit, 1);
+        
+        // Get skills the child can already learn through their own classes
+        List<SkillModel> childLearnableSkills = getLegalSkills(unit);
+        List<Integer> childLearnableIds = new ArrayList<>();
+        for (SkillModel skill : childLearnableSkills) {
+            childLearnableIds.add(skill.getId());
+        }
+        
+        // Filter out skills the child can already learn
+        fatherSkills.removeIf(skill -> childLearnableIds.contains(skill.getId()));
+        motherSkills.removeIf(skill -> childLearnableIds.contains(skill.getId()));
  
         ObservableList<String> fatherNames = FXCollections.observableArrayList();
         fatherNames.add("None");
