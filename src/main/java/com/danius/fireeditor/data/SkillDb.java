@@ -153,7 +153,8 @@ public class SkillDb {
         if (unit.rawChild == null) return exclusiveSkills;
         List<SkillModel> inheritClassSkills = getSkillsFromInheritClasses(unit);
         //Last Skill Slot Inheritance
-        List<SkillModel> lastSkillsParent = getSlotInheritSkills(unit, parentSlot);
+        //Last Skill Slot Inheritance (without forced skill filtering for dropdown)
+        List<SkillModel> lastSkillsParent = getSlotInheritSkillsWithoutForce(unit, parentSlot);
         //The matching skills are removed
         exclusiveSkills = lastSkillsParent.stream()
                 .filter(skill -> inheritClassSkills.stream().noneMatch(item -> item.getId() == skill.getId())).toList();
@@ -230,6 +231,38 @@ public class SkillDb {
             fatherSkills.add(forcedFather);
         }
 
+        return removeDuplicates(fatherSkills);
+    }
+    
+    //Retrieves ALL the skills that can be passed through last skill slot inheritance (without forced skill filtering)
+    //Used for dropdown population to show all available skills, not just the forced one
+    private static List<SkillModel> getSlotInheritSkillsWithoutForce(Unit unit, int parentSlot) {
+        List<SkillModel> fatherSkills = new ArrayList<>();
+        boolean unitFemale = unit.isFemale();
+        
+        //First, the skills from the base class of the parent and grandparents are retrieved
+        RawParent rawParent = unit.rawChild.getRawParent(parentSlot);
+        for (int i = 0; i < 3; i++) {
+            int parent = rawParent.parentId(i);
+            if (parent == 0xFFFF) continue;
+            
+            //For this purpose, un-inheritable classes are not removed
+            //Since this is last skill slot, the parent's gender class set is retrieved
+            List<ClassModel> parentClasses = ClassDb.getUnitBaseClasses(parent, UnitDb.isUnitFemale(parent));
+            //BUT if the class is item AND cannot be inherited, then it is removed
+            parentClasses.removeIf(model -> model.isDlc() && !model.canBeInherited());
+            
+            //The skills from each class and personal skills are retrieved and sorted by ID
+            List<SkillModel> parentClassesSkills = getSkillsFromClasses(parentClasses);
+            parentClassesSkills.addAll(getPersonalSkills(parent));
+            parentClassesSkills.removeIf(model -> !model.isInherit()); //Remove un-inheritable skills
+            parentClassesSkills = removeDuplicates(parentClassesSkills);
+            
+            fatherSkills.addAll(parentClassesSkills);
+        }
+        
+        //NOTE: No forced skill filtering here - we want all skills for the dropdown
+        
         return removeDuplicates(fatherSkills);
     }
 

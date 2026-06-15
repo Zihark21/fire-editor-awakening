@@ -1,4 +1,4 @@
-package com.danius.fireeditor.controllers.unit;
+﻿package com.danius.fireeditor.controllers.unit;
  
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.data.ClassDb;
@@ -63,6 +63,10 @@ public class SkillController {
     }
  
     public void setAllLegal() {
+        // Save current dropdown selections
+        int savedFatherIndex = comboFatherSkill.getSelectionModel().getSelectedIndex();
+        int savedMotherIndex = comboMotherSkill.getSelectionModel().getSelectedIndex();
+        
         unit.setLegalSkills();
         String rawString = unit.rawSkill.skillString;
         //All the skills are unchecked
@@ -71,11 +75,14 @@ public class SkillController {
         for (int i = 0; i < checkboxes.length; i++) {
             if (rawString.charAt(i) == '1') checkboxes[i].setSelected(true);
         }
+        // Restore dropdown selections
+        comboFatherSkill.getSelectionModel().select(savedFatherIndex);
+        comboMotherSkill.getSelectionModel().select(savedMotherIndex);
         //Re-apply inherited skills selected in dropdowns
         applyInheritSelections();
         unselectActive();
     }
- 
+
     public void setAll() {
         for (int i = 0; i < checkboxes.length; i++) {
             if (i != 0 && i != checkboxes.length - 1) checkboxes[i].setSelected(true);
@@ -200,18 +207,20 @@ public class SkillController {
     private void addInheritListeners() {
         comboFatherSkill.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             if (unit == null || updatingDropdown) return;
-            int oldIndex = oldVal.intValue();
             int newIndex = newVal.intValue();
-            if (oldIndex >= 0 && oldIndex < fatherSkillIds.size()) {
-                int oldSkill = fatherSkillIds.get(oldIndex);
-                if (oldSkill >= 0) {
-                    //Only uncheck if mother dropdown doesn't also have this skill selected
-                    int motherIndex = comboMotherSkill.getSelectionModel().getSelectedIndex();
-                    if (motherIndex < 0 || motherIndex >= motherSkillIds.size() || motherSkillIds.get(motherIndex) != oldSkill) {
-                        checkboxes[oldSkill].setSelected(false);
-                    }
+            
+            // Uncheck all father skills except the one selected (or if also selected in mother dropdown)
+            int motherIndex = comboMotherSkill.getSelectionModel().getSelectedIndex();
+            int motherSkillId = (motherIndex >= 0 && motherIndex < motherSkillIds.size()) ? motherSkillIds.get(motherIndex) : -1;
+            
+            for (int i = 1; i < fatherSkillIds.size(); i++) {
+                int skillId = fatherSkillIds.get(i);
+                if (i != newIndex && skillId != motherSkillId) {
+                    checkboxes[skillId].setSelected(false);
                 }
             }
+            
+            // Check the newly selected skill
             if (newIndex >= 0 && newIndex < fatherSkillIds.size()) {
                 int newSkill = fatherSkillIds.get(newIndex);
                 if (newSkill >= 0) {
@@ -221,21 +230,23 @@ public class SkillController {
             setCount();
             unselectActive();
         });
- 
+
         comboMotherSkill.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             if (unit == null || updatingDropdown) return;
-            int oldIndex = oldVal.intValue();
             int newIndex = newVal.intValue();
-            if (oldIndex >= 0 && oldIndex < motherSkillIds.size()) {
-                int oldSkill = motherSkillIds.get(oldIndex);
-                if (oldSkill >= 0) {
-                    //Only uncheck if father dropdown doesn't also have this skill selected
-                    int fatherIndex = comboFatherSkill.getSelectionModel().getSelectedIndex();
-                    if (fatherIndex < 0 || fatherIndex >= fatherSkillIds.size() || fatherSkillIds.get(fatherIndex) != oldSkill) {
-                        checkboxes[oldSkill].setSelected(false);
-                    }
+            
+            // Uncheck all mother skills except the one selected (or if also selected in father dropdown)
+            int fatherIndex = comboFatherSkill.getSelectionModel().getSelectedIndex();
+            int fatherSkillId = (fatherIndex >= 0 && fatherIndex < fatherSkillIds.size()) ? fatherSkillIds.get(fatherIndex) : -1;
+            
+            for (int i = 1; i < motherSkillIds.size(); i++) {
+                int skillId = motherSkillIds.get(i);
+                if (i != newIndex && skillId != fatherSkillId) {
+                    checkboxes[skillId].setSelected(false);
                 }
             }
+            
+            // Check the newly selected skill
             if (newIndex >= 0 && newIndex < motherSkillIds.size()) {
                 int newSkill = motherSkillIds.get(newIndex);
                 if (newSkill >= 0) {
