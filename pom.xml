@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>fireeditor</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>fireeditor</name>
+    <groupId>com.danius</groupId>
+    <artifactId>Fire-Editor</artifactId>
+    <version>2.0</version>
+    <name>Fire-Editor</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,15 +58,24 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <finalName>${project.artifactId}-Awakening-${project.version}</finalName>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
