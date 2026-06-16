@@ -18,8 +18,14 @@ public class RawSkill {
     public RawSkill(){
         String path = Constants.RES_BLOCK + "rawUnitSkill";
         try {
-            byte[] bytes = Objects.requireNonNull(RawSkill.class.getResourceAsStream(path)).readAllBytes();
-            this.skillString = byteArrayToBinaryString(bytes);
+            java.io.InputStream is = RawSkill.class.getResourceAsStream(path);
+            if (is != null) {
+                byte[] bytes = is.readAllBytes();
+                this.skillString = byteArrayToBinaryString(bytes);
+            } else {
+                // Create default block if template file is missing
+                this.skillString = byteArrayToBinaryString(new byte[0xD]); // Default size for RawSkill
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -43,7 +43,13 @@ public class LogBlock {
         String path = Constants.RES_BLOCK + "rawUnitLog";
         byte[] bytes = new byte[0];
         try {
-            bytes = Objects.requireNonNull(LogBlock.class.getResourceAsStream(path)).readAllBytes();
+            java.io.InputStream is = LogBlock.class.getResourceAsStream(path);
+            if (is != null) {
+                bytes = is.readAllBytes();
+            } else {
+                // Create default block if template file is missing
+                bytes = new byte[0x188]; // Default size for LogBlock (US region)
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

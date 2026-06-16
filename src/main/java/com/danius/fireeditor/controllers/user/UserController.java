@@ -132,7 +132,7 @@ public class UserController {
 
     public void openCredits() {
         try {
-            FXMLLoader fxmlLoader = MainController.getWindowUser("viewCredits.fxml");
+            FXMLLoader fxmlLoader = MainController.getWindowUser("viewCredits");
             Parent root = fxmlLoader.load();
             // Pass the selected value to the second view's controller
             StoryController storyController = fxmlLoader.getController();
@@ -151,7 +151,7 @@ public class UserController {
 
     public void openBarrack() {
         try {
-            FXMLLoader fxmlLoader = MainController.getWindowUser("viewBarrack.fxml");
+            FXMLLoader fxmlLoader = MainController.getWindowUser("viewBarrack");
             Parent root = fxmlLoader.load();
             // Pass the selected value to the second view's controller
             BarrackController barrackController = fxmlLoader.getController();
@@ -170,7 +170,7 @@ public class UserController {
 
     public void openMap() {
         try {
-            FXMLLoader fxmlLoader = MainController.getWindowUser("viewOverworld.fxml");
+            FXMLLoader fxmlLoader = MainController.getWindowUser("viewOverworld");
             Parent root = fxmlLoader.load();
             // Pass the selected value to the second view's controller
             MapController mapController = fxmlLoader.getController();
@@ -189,7 +189,7 @@ public class UserController {
 
     public void openWireless() {
         try {
-            FXMLLoader fxmlLoader = MainController.getWindowUser("viewTeams.fxml");
+            FXMLLoader fxmlLoader = MainController.getWindowUser("viewTeams");
             Parent root = fxmlLoader.load();
             // Pass the selected value to the second view's controller
             TeamController teamController = fxmlLoader.getController();
@@ -208,7 +208,7 @@ public class UserController {
 
     public void openMisc() {
         try {
-            FXMLLoader fxmlLoader = MainController.getWindowUser("viewUserMisc.fxml");
+            FXMLLoader fxmlLoader = MainController.getWindowUser("viewUserMisc");
             Parent root = fxmlLoader.load();
             // Pass the selected value to the second view's controller
             UserMiscController controller = fxmlLoader.getController();

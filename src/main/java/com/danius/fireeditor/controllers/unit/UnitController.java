@@ -606,7 +606,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 //updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewFlags.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewFlags");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -630,7 +630,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 //updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewSkills.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewSkills");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -654,7 +654,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewUnitMisc.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewUnitMisc");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -685,7 +685,7 @@ public class UnitController {
                 //Check the support block size
                 listViewUnit.getSelectionModel().getSelectedItem().rawSupport.expandBlock();
                 updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewSupports.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewSupports");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -713,7 +713,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewChild.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewChild");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -739,7 +739,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewLogbook.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewLogbook");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();
@@ -765,7 +765,7 @@ public class UnitController {
             if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 //The current fields are updated
                 updateUnitFromFields(listViewUnit.getSelectionModel().getSelectedItem());
-                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewInventory.fxml");
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewInventory");
                 Parent root = fxmlLoader.load();
                 // Get the selected value from the main view's controller
                 Unit selectedValue = listViewUnit.getSelectionModel().getSelectedItem();

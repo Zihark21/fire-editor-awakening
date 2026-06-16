@@ -299,7 +299,7 @@ public class Unit {
         unitDu.setHiddenLevel(rawFlags.hiddenLevel());
         unitDu.setHairColorFx(rawBlockEnd.getHairColorFx());
         for (int i = 0; i < 8; i++) unitDu.setGrowth(rawBlock1.growth()[i], i);
-        for (int i = 0; i < 5; i++) unitDu.setActiveSkills(rawBlock2.getCurrentSkills()[i], i);
+        for (int i = 0; i < 5; i++) unitDu.setActiveSkill(rawBlock2.getCurrentSkills()[i], i);
         for (int i = 0; i < 5; i++) unitDu.setWeaponExp(rawBlock2.getWeaponExp()[i], i);
         //Flags
         unitDu.setDuFlag(4, rawFlags.hasTraitFlag(4)); //Leader Flag

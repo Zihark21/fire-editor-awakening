@@ -42,8 +42,14 @@ public class ChildBlock {
     public ChildBlock() {
         try {
             String path = Constants.RES_BLOCK + "rawUnitChild";
-            byte[] bytes = Objects.requireNonNull(ChildBlock.class.getResourceAsStream(path)).readAllBytes();
-            splitBlocks(bytes);
+            java.io.InputStream is = ChildBlock.class.getResourceAsStream(path);
+            if (is != null) {
+                byte[] bytes = is.readAllBytes();
+                splitBlocks(bytes);
+            } else {
+                // Create default block if template file is missing
+                splitBlocks(new byte[0x25]); // Default size for ChildBlock
+            }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

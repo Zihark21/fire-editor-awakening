@@ -32,9 +32,16 @@ public class UnitDu {
     public UnitDu(boolean isWest) {
         String path = Constants.RES_BLOCK + "rawUnitDu";
         try {
-            byte[] bytes = Objects.requireNonNull(UnitDu.class.getResourceAsStream(path)).readAllBytes();
-            initialize(bytes, new byte[0]);
-            changeRegion(isWest);
+            java.io.InputStream is = UnitDu.class.getResourceAsStream(path);
+            if (is != null) {
+                byte[] bytes = is.readAllBytes();
+                initialize(bytes, new byte[0]);
+                changeRegion(isWest);
+            } else {
+                // Create default block if template file is missing
+                initialize(new byte[0x12F], new byte[0]); // Default size for UnitDu
+                changeRegion(isWest);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -251,88 +258,83 @@ public class UnitDu {
         rawBlock1[point + slot] = (byte) (value & 0xFF);
     }
 
-    public int[] getActiveSkills() {
-        int[] skills = new int[5];
-        int point = 0x16;
-        for (int i = 0; i < skills.length; i++) {
-            skills[i] = rawBlock1[point + i] & 0xFF;
-        }
-        return skills;
-    }
-
-    public void setActiveSkills(int value, int slot) {
-        int point = 0x16;
-        rawBlock1[point + slot] = (byte) (value & 0xFF);
-    }
-
     public int[] getWeaponExp() {
-        int[] exp = new int[6];
-        int point = 0x1B;
-        for (int i = 0; i < exp.length; i++) {
-            exp[i] = rawBlock1[point + i] & 0xFF;
+        int[] weaponExp = new int[6];
+        int point = 0x16;
+        for (int i = 0; i < weaponExp.length; i++) {
+            weaponExp[i] = rawBlock1[point + i] & 0xFF;
         }
-        return exp;
+        return weaponExp;
     }
 
     public void setWeaponExp(int value, int slot) {
-        int point = 0x1B;
+        int point = 0x16;
         rawBlock1[point + slot] = (byte) (value & 0xFF);
     }
 
-    //Parents (6 slots, no avatar modifiers)
+    public int[] getActiveSkills() {
+        int[] activeSkills = new int[5];
+        int point = 0x1C;
+        for (int i = 0; i < activeSkills.length; i++) {
+            activeSkills[i] = rawBlock1[point + (i * 2)] & 0xFF;
+        }
+        return activeSkills;
+    }
+
+    public void setActiveSkill(int value, int slot) {
+        int point = 0x1C;
+        rawBlock1[point + (slot * 2)] = (byte) (value & 0xFF);
+    }
+
     public int getParent(int slot) {
-        return rawChild[slot] & 0xFF;
+        int point = 0x26;
+        return Hex.getByte2(rawBlock1, point + (slot * 2));
     }
 
     public void setParent(int value, int slot) {
-        if (value >= 255) value = 255;
-        rawChild[slot] = (byte) (value & 0xFF);
-    }
-
-    public int length() {
-        return bytes().length;
+        int point = 0x26;
+        Hex.setByte2(rawBlock1, point + (slot * 2), value);
     }
 
     public void changeRegion(boolean isWest) {
         this.isWest = isWest;
-        //Items
-        for (DuItem item : itemList) item.changeRegion(isWest);
-        //Logbook Data
         rawLog.changeRegion(isWest);
     }
 
     public byte[] bytes() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            byteArrayOutputStream.write(rawBlock1);
-            for (DuItem item : itemList) byteArrayOutputStream.write(item.bytes());
-            byteArrayOutputStream.write(rawChild);
-            byteArrayOutputStream.write(rawSkill.bytes());
-            byteArrayOutputStream.write(rawUnknown);
-            //The profile card and messages are excluded
-            int nameSize = (isWest) ? DuTeam.US_NAME_LOG : DuTeam.JP_NAME_LOG;
-            byteArrayOutputStream.write(Arrays.copyOfRange(rawLog.getBytes(), 0x0, nameSize + 0x1E));
+            outputStream.write(rawBlock1);
+            for (DuItem item : itemList) outputStream.write(item.bytes());
+            outputStream.write(rawChild);
+            outputStream.write(rawSkill.bytes());
+            outputStream.write(rawUnknown);
+            outputStream.write(rawLog.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return byteArrayOutputStream.toByteArray();
+        return outputStream.toByteArray();
     }
 
     public byte[] bytesFull() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            if (header != null) byteArrayOutputStream.write(header);
-            byteArrayOutputStream.write(rawBlock1);
-            for (DuItem item : itemList) byteArrayOutputStream.write(item.bytes());
-            byteArrayOutputStream.write(rawChild);
-            byteArrayOutputStream.write(rawSkill.bytes());
-            byteArrayOutputStream.write(rawUnknown);
-            rawLog.removeFooter();
-            byteArrayOutputStream.write(rawLog.getBytes());
+            outputStream.write(rawBlock1);
+            for (DuItem item : itemList) outputStream.write(item.bytes());
+            outputStream.write(rawChild);
+            outputStream.write(rawSkill.bytes());
+            outputStream.write(rawUnknown);
+            // Avatar Name
+            int nameSize = (isWest) ? DuTeam.US_NAME_LOG : DuTeam.JP_NAME_LOG;
+            byte[] rawName = Arrays.copyOfRange(rawLog.nameBlock, 0x0, nameSize);
+            outputStream.write(rawName);
+            // Avatar Data (without the extra data)
+            byte[] rawAvatar = Arrays.copyOfRange(rawLog.mainBlock, 0x0, rawLog.mainBlock.length);
+            outputStream.write(rawAvatar);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return byteArrayOutputStream.toByteArray();
+        return outputStream.toByteArray();
     }
 
     @Override

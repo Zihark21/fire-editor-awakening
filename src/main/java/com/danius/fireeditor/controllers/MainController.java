@@ -77,6 +77,14 @@ public class MainController {
         event.consume();
     }
 
+    @FXML
+    private void handleDragOver(DragEvent event) {
+        if (event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(TransferMode.ANY);
+        }
+        event.consume();
+    }
+
     private void loadFile(File file) {
         try {
             path = file.getParent(); // Update the path
@@ -95,7 +103,8 @@ public class MainController {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Error loading file");
+            e.printStackTrace();
+            throw new RuntimeException("Error loading file: " + e.getMessage());
         }
     }
 
@@ -114,7 +123,8 @@ public class MainController {
             FireEditor.userController.loadBlocks();
             FireEditor.global = null;
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
+            throw new RuntimeException("Error loading chapter file: " + e.getMessage());
         }
     }
 
@@ -131,7 +141,8 @@ public class MainController {
             tabUnit.setDisable(true);
             FireEditor.chapterFile = null;
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
+            throw new RuntimeException("Error loading global file: " + e.getMessage());
         }
     }
 
@@ -224,74 +235,38 @@ public class MainController {
         }
     }
 
-
     public void exportUnit() {
-        //The data is compiled
-        //FireEditor.unitController.updateUnitFromFields(
-        //        FireEditor.unitController.listViewUnit.getSelectionModel().getSelectedItem());
-        Unit unit = FireEditor.unitController.listViewUnit.getSelectionModel().getSelectedItem();
-        if (unit == null) return;
-        //File chooser
+        if (FireEditor.chapterFile == null) return;
+        Unit selectedUnit = FireEditor.unitController.listViewUnit.getSelectionModel().getSelectedItem();
+        if (selectedUnit == null) return;
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(path));
-        fileChooser.setInitialFileName(unit.unitName());
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
-                "Fire Emblem Awakening Unit", "*" + ".fe13");
-        fileChooser.getExtensionFilters().add(extensionFilter);
-        // Show save dialog
         File file = fileChooser.showSaveDialog(null);
         if (file == null) return;
+
         path = file.getParent();
-        // Save byte array to the selected file
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(unit.getUnitBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            fos.write(selectedUnit.getUnitBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error exporting unit: " + e.getMessage());
         }
     }
 
     public byte[] chapterBytes(boolean decomp) {
-        //The data is compiled
-        byte[] data = new byte[0];
-        if (FireEditor.chapterFile != null) {
-            if (decomp) data = FireEditor.chapterFile.getBytes();
-            else data = FireEditor.chapterFile.getBytesComp();
-        } else if (FireEditor.global != null) {
-            if (decomp) data = FireEditor.global.getBytes();
-            else data = FireEditor.global.getBytesComp();
-        }
-
-        return data;
+        if (FireEditor.chapterFile == null) return new byte[0];
+        if (decomp) return FireEditor.chapterFile.getBytes();
+        else return FireEditor.chapterFile.getBytesComp();
     }
 
-    public static FXMLLoader getWindowUnit(String name) {
-        return new FXMLLoader(FireEditor.class.getResource(Constants.RES_FXML + "unit/" + name));
+    public static FXMLLoader getWindowUser(String fxml) throws IOException {
+        return new FXMLLoader(MainController.class.getResource(Constants.RES_FXML + "user/" + fxml + ".fxml"));
     }
 
-    public static FXMLLoader getWindowUser(String name) {
-        return new FXMLLoader(FireEditor.class.getResource(Constants.RES_FXML + "user/" + name));
-    }
-
-    @FXML
-    private void handleDragOver(DragEvent event) {
-        if (event.getGestureSource() != this && event.getDragboard().hasFiles()) {
-            event.acceptTransferModes(TransferMode.COPY);
-        }
-        event.consume();
-    }
-
-    @FXML
-    private void credits() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About");
-        alert.setHeaderText(null);
-        alert.setContentText(
-                """
-                        Fire Emblem Awakening Save Editor made by Danius88.
-                        
-                        Source code:
-                        https://github.com/Dani88alv/fire-editor-awakening"""
-        );
-        alert.showAndWait();
+    public static FXMLLoader getWindowUnit(String fxml) throws IOException {
+        return new FXMLLoader(MainController.class.getResource(Constants.RES_FXML + "unit/" + fxml + ".fxml"));
     }
 }
+
+

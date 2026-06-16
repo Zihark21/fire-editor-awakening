@@ -18,8 +18,14 @@ public class RawInventory {
     public RawInventory() {
         String path = Constants.RES_BLOCK + "rawUnitInventory";
         try {
-            byte[] bytes = Objects.requireNonNull(RawInventory.class.getResourceAsStream(path)).readAllBytes();
-            initialize(bytes);
+            java.io.InputStream is = RawInventory.class.getResourceAsStream(path);
+            if (is != null) {
+                byte[] bytes = is.readAllBytes();
+                initialize(bytes);
+            } else {
+                // Create default block if template file is missing
+                initialize(new byte[0x19]); // Default size for RawInventory
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

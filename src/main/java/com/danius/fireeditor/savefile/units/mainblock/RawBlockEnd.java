@@ -15,7 +15,13 @@ public class RawBlockEnd {
     public RawBlockEnd() {
         String path = Constants.RES_BLOCK + "rawUnitEnd";
         try {
-            this.blockBytes = Objects.requireNonNull(RawBlockEnd.class.getResourceAsStream(path)).readAllBytes();
+            java.io.InputStream is = RawBlockEnd.class.getResourceAsStream(path);
+            if (is != null) {
+                this.blockBytes = is.readAllBytes();
+            } else {
+                // Create default block if template file is missing
+                this.blockBytes = new byte[0x3F]; // Default size for RawBlockEnd
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
