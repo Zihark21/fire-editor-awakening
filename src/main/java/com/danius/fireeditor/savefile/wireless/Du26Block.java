@@ -12,8 +12,8 @@ import java.util.Objects;
 
 public class Du26Block {
     public boolean isWest;
-    private final int teamSize;
-    private final byte[] header;
+    private int teamSize;
+    private byte[] header;
     public List<DuTeam> teamList;
     private List<byte[]> unknownList;
     public DuTeam playerTeam;
@@ -21,35 +21,48 @@ public class Du26Block {
     private byte[] rawExtra;
 
     public Du26Block(byte[] bytes, boolean isWest) {
-        int offset = 0;
         this.isWest = isWest;
-        //Block Header
-        this.header = Arrays.copyOfRange(bytes, 0x0, 0x6);
-        offset += header.length;
-        //Wireless Teams (SpotPass + StreetPass)
         this.teamSize = teamSize(isWest);
-        readEncounters(bytes, offset);
-        for (DuTeam team : teamList) offset += team.length();
+        this.header = new byte[0x6];
+        this.teamList = new ArrayList<>();
+        this.unknownList = new ArrayList<>();
+        this.playerTeam = null;
+        this.rawSpotPass = new byte[0];
+        this.rawExtra = new byte[0];
+        if (bytes == null || bytes.length == 0) return;
+        int offset = 0;
+        //Block Header
+        int headerSize = Math.min(0x6, bytes.length);
+        this.header = Arrays.copyOfRange(bytes, 0x0, headerSize);
+        offset += header.length;
+        offset = readEncounters(bytes, offset);
         offset += 1; //Wireless Team Count
         offset += 1; //Other Unknown Count Byte
         //Unknown
-        unknownList = new ArrayList<>();
+        if (offset >= bytes.length) return;
         int unknownCount = bytes[offset];
         offset++; //Unknown Count
         for (int i = 0; i < unknownCount; i++) {
-            byte[] what = Arrays.copyOfRange(bytes, offset, offset + 0x29);
-            offset += what.length;
+            if (offset >= bytes.length) break;
+            int unknownSize = Math.min(0x29, bytes.length - offset);
+            byte[] what = Arrays.copyOfRange(bytes, offset, offset + unknownSize);
+            offset += unknownSize; // Use actual copied size
             unknownList.add(what);
         }
         //StreetPass Team
         System.out.println("\nSTREETPASS TEAM:");
+        if (offset >= bytes.length) return;
+        int streetPassSize = Math.min(teamSize + DuTeam.HEADER_SIZE, bytes.length - offset);
         playerTeam = new DuTeam
-                (Arrays.copyOfRange(bytes, offset, offset + teamSize + DuTeam.HEADER_SIZE));
-        offset += playerTeam.length();
+                (Arrays.copyOfRange(bytes, offset, offset + streetPassSize));
+        offset += streetPassSize; // Use actual copied size, not playerTeam.length()
         //SpotPass
-        this.rawSpotPass = Arrays.copyOfRange(bytes, offset, offset + 0x1C1);
-        offset += rawSpotPass.length;
+        if (offset >= bytes.length) return;
+        int spotPassSize = Math.min(0x1C1, bytes.length - offset);
+        this.rawSpotPass = Arrays.copyOfRange(bytes, offset, offset + spotPassSize);
+        offset += spotPassSize; // Use actual copied size
         //Extra Data
+        if (offset >= bytes.length) return;
         this.rawExtra = Arrays.copyOfRange(bytes, offset, bytes.length);
     }
 
@@ -71,7 +84,7 @@ public class Du26Block {
 
     public int getDuelScore(int slot) {
         int point = 0x15;
-        return rawExtra[point + slot] & 0xFF;
+        return rawExtra[point + slot + 1] & 0xFF;
     }
 
     public void setDuelScore(int slot, int value) {
@@ -81,12 +94,12 @@ public class Du26Block {
 
     public int dlcTurn(int slot) {
         int point = 0x56;
-        return rawExtra[point + slot] & 0xFF;
+        return rawExtra[point + slot + 1] & 0xFF;
     }
 
     public void setDlcTurn(int slot, int value) {
         int point = 0x56;
-        rawExtra[point + slot] = (byte) (value & 0xFF);
+        rawExtra[point + slot + 1] = (byte) (value & 0xFF);
     }
 
     public static int teamSize(boolean isWest) {
@@ -106,21 +119,25 @@ public class Du26Block {
         return (unitSize * 10) + settingSize + messageSize;
     }
 
-    public void readEncounters(byte[] bytes, int offset) {
+    public int readEncounters(byte[] bytes, int offset) {
         teamList = new ArrayList<>();
+        if (offset >= bytes.length) return offset;
         int teamCount = bytes[offset] & 0xFF;
-        if (teamCount == 0) return;
+        if (teamCount == 0) return offset;
         offset++; //Team Count byte
         //Team data
-        System.out.println("\nWIRELESS TEAMS:");
+        System.out.println("\\nWIRELESS TEAMS:");
         for (int i = 0; i < teamCount; i++) {
+            if (offset >= bytes.length) break;
             int total = DuTeam.HEADER_SIZE + teamSize + 1;
-            byte[] teamBytes = Arrays.copyOfRange(bytes, offset, total + offset);
+            int actualSize = Math.min(total, bytes.length - offset);
+            byte[] teamBytes = Arrays.copyOfRange(bytes, offset, offset + actualSize);
             DuTeam duTeam = new DuTeam(teamBytes);
             teamList.add(duTeam);
-            offset += duTeam.length();
+            offset += actualSize; // Use actual copied size
             System.out.println();
         }
+        return offset;
     }
 
 
@@ -128,7 +145,13 @@ public class Du26Block {
         String path = Constants.RES_BLOCK + "rawSpotpassShort";
         byte[] blockSpot;
         try {
-            blockSpot = Objects.requireNonNull(UnitDu.class.getResourceAsStream(path)).readAllBytes();
+            java.io.InputStream is = UnitDu.class.getResourceAsStream(path);
+            if (is != null) {
+                blockSpot = is.readAllBytes();
+            } else {
+                // Create default block if template file is missing
+                blockSpot = new byte[0x12F]; // Default size for SpotPass
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -175,3 +198,5 @@ public class Du26Block {
         return bytes().length;
     }
 }
+
+

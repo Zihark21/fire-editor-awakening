@@ -1,4 +1,4 @@
-﻿package com.danius.fireeditor.data;
+package com.danius.fireeditor.data;
 
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.data.model.ClassModel;

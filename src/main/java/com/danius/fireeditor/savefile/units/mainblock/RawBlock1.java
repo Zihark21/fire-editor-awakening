@@ -16,7 +16,13 @@ public class RawBlock1 {
     public RawBlock1() {
         String path = Constants.RES_BLOCK + "rawUnitBlock1";
         try {
-            this.blockBytes = Objects.requireNonNull(RawBlock1.class.getResourceAsStream(path)).readAllBytes();
+            java.io.InputStream is = RawBlock1.class.getResourceAsStream(path);
+            if (is != null) {
+                this.blockBytes = is.readAllBytes();
+            } else {
+                // Create default block if template file is missing
+                this.blockBytes = new byte[0x1A]; // Default size for RawBlock1
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

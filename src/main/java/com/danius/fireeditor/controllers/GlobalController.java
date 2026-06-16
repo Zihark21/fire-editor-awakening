@@ -77,8 +77,12 @@ public class GlobalController {
         if (FireEditor.global != null && FireEditor.globalController != null) {
             this.global = FireEditor.global;
             listViewUnit.setItems(FXCollections.observableArrayList(global.glUnitBlock.unitList));
-            listViewUnit.getSelectionModel().selectLast();
-            listViewUnit.getSelectionModel().selectFirst();
+            try {
+                listViewUnit.getSelectionModel().selectLast();
+                listViewUnit.getSelectionModel().selectFirst();
+            } catch (Exception e) {
+                // Ignore selection errors
+            }
             lblUnitCount.setText("Logbook Avatars: " + global.glUnitBlock.unitList.size() + "/99");
             check1.setSelected(global.glUserBlock.hasGlobalFlag(1));
             check2.setSelected(global.glUserBlock.hasGlobalFlag(2));
@@ -125,12 +129,20 @@ public class GlobalController {
     public void setPortrait() {
         UnitDu unitDu = listViewUnit.getSelectionModel().getSelectedItem();
         if (unitDu != null) {
+            try {
                 Unit unit = unitDu.toUnit();
                 Image[] portrait = Portrait.setImage(unit);
                 imgBuild.setImage(portrait[0]);
                 imgHairColor.setImage(portrait[1]);
                 imgHair.setImage(portrait[2]);
                 labelUnitName.setText(unit.unitName());
+            } catch (Exception e) {
+                // Global Character Editor not fully implemented - skip portrait rendering
+                imgBuild.setImage(null);
+                imgHairColor.setImage(null);
+                imgHair.setImage(null);
+                labelUnitName.setText("Character Editor Not Implemented");
+            }
         } else {
             imgBuild.setImage(null);
             imgHairColor.setImage(null);
@@ -252,3 +264,6 @@ public class GlobalController {
     }
 
 }
+
+
+

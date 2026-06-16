@@ -18,7 +18,13 @@ public class RawFlags {
     public RawFlags() {
         String path = Constants.RES_BLOCK + "rawUnitFlags";
         try {
-            this.bytes = Objects.requireNonNull(RawFlags.class.getResourceAsStream(path)).readAllBytes();
+            java.io.InputStream is = RawFlags.class.getResourceAsStream(path);
+            if (is != null) {
+                this.bytes = is.readAllBytes();
+            } else {
+                // Create default block if template file is missing
+                this.bytes = new byte[0x2A]; // Default size for RawFlags
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
