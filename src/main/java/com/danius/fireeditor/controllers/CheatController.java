@@ -122,6 +122,7 @@ public class CheatController {
 
     public void addSpotPass() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.setTitle("SpotPass Data");
         alert.setHeaderText("This will reset all the SpotPass content. Proceed? \n" +
                 "WARNING: This feature has not been fully tested!");
@@ -149,6 +150,7 @@ public class CheatController {
         String targetRegion = (isWest) ? "Japan" : "US/Europe";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.setTitle("Change Region");
         alert.setHeaderText("Current region: " + originalRegion + "\n" +
                 "The save file will be changed to " + targetRegion);

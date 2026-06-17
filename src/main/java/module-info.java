@@ -1,6 +1,6 @@
 module com.example.fireeditor {
-    requires javafx.controls;
-    requires javafx.fxml;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
     requires java.logging;
     requires org.jdom2;
 

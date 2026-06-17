@@ -8,7 +8,6 @@ import com.danius.fireeditor.savefile.global.Global;
 import com.danius.fireeditor.savefile.units.Unit;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.DragEvent;
@@ -62,6 +61,11 @@ public class MainController {
         if (file == null) return;
 
         loadFile(file);
+    }
+
+    @FXML
+    public void toggleDarkMode() {
+        ThemeManager.getInstance().toggleDarkMode();
     }
 
     @FXML

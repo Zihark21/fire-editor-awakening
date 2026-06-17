@@ -3,6 +3,7 @@ package com.danius.fireeditor;
 import com.danius.fireeditor.controllers.CheatController;
 import com.danius.fireeditor.controllers.GlobalController;
 import com.danius.fireeditor.controllers.MainController;
+import com.danius.fireeditor.controllers.ThemeManager;
 import com.danius.fireeditor.controllers.convoy.ConvoyController;
 import com.danius.fireeditor.controllers.unit.UnitController;
 import com.danius.fireeditor.controllers.user.UserController;
@@ -41,6 +42,7 @@ public class FireEditor extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 750, 445);
         stage.setTitle("Fire Editor: Awakening");
         stage.setScene(scene);
+        ThemeManager.getInstance().applyToStage(stage);
         stage.show();
     }
 

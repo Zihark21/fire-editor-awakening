@@ -3,7 +3,6 @@ package com.danius.fireeditor.controllers;
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.savefile.global.Global;
 import com.danius.fireeditor.savefile.units.Unit;
-import com.danius.fireeditor.savefile.wireless.DuTeam;
 import com.danius.fireeditor.savefile.wireless.UnitDu;
 import com.danius.fireeditor.util.Portrait;
 import javafx.collections.FXCollections;
@@ -13,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -157,6 +154,7 @@ public class GlobalController {
         String targetRegion = (isCurrentWest) ? "Japan" : "US/Europe";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.setTitle("Change Region");
         alert.setHeaderText("Current region: " + originalRegion + "\n" +
                 "The save file will be changed to " + targetRegion);
@@ -180,6 +178,7 @@ public class GlobalController {
     public void unlockSupports() {
         global.glUserBlock.fullSupportLog();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.setHeaderText(null);
         alert.setContentText("All the Support Log and Unit Gallery entries have been unlocked!");
         alert.showAndWait();
@@ -216,12 +215,14 @@ public class GlobalController {
             MainController.path = file.getParent();
             
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
             alert.setHeaderText(null);
             alert.setContentText("File saved successfully!");
             alert.showAndWait();
             
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
             alert.setHeaderText(null);
             alert.setContentText("Error saving file: " + e.getMessage());
             alert.showAndWait();

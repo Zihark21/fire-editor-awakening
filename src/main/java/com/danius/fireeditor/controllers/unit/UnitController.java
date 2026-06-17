@@ -2,6 +2,7 @@ package com.danius.fireeditor.controllers.unit;
 
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.controllers.MainController;
+import com.danius.fireeditor.controllers.ThemeManager;
 import com.danius.fireeditor.controllers.UI;
 import com.danius.fireeditor.data.ClassDb;
 import com.danius.fireeditor.data.ItemDb;
@@ -196,6 +197,7 @@ public class UnitController {
     @FXML
     private void classReport() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.getDialogPane().setPrefWidth(500);
         int itemsPerRow = 5;
         Unit unit = listViewUnit.getSelectionModel().getSelectedItem();
@@ -618,6 +620,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Flags");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -642,6 +645,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Skills");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -666,6 +670,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Other Data");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -701,6 +706,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Supports");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -727,6 +733,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Child Data");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -753,6 +760,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Avatar Data");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {
@@ -776,6 +784,7 @@ public class UnitController {
                 secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
                 secondaryStage.setTitle("Inventory");
                 secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
                 secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
             }
         } catch (Exception e) {

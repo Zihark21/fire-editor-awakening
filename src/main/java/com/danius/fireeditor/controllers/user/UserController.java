@@ -2,8 +2,8 @@ package com.danius.fireeditor.controllers.user;
 
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.controllers.MainController;
+import com.danius.fireeditor.controllers.ThemeManager;
 import com.danius.fireeditor.controllers.UI;
-import com.danius.fireeditor.data.MiscDb;
 import com.danius.fireeditor.savefile.barrack.EvstBlock;
 import com.danius.fireeditor.savefile.map.GmapBlock;
 import com.danius.fireeditor.savefile.user.HeaderBlock;
@@ -142,6 +142,7 @@ public class UserController {
             secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
             secondaryStage.setTitle("Story Progress");
             secondaryStage.setScene(new Scene(root));
+            ThemeManager.getInstance().applyToStage(secondaryStage);
             secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
 
         } catch (Exception e) {
@@ -161,6 +162,7 @@ public class UserController {
             secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
             secondaryStage.setTitle("Barrack Events");
             secondaryStage.setScene(new Scene(root));
+            ThemeManager.getInstance().applyToStage(secondaryStage);
             secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
 
         } catch (Exception e) {
@@ -180,6 +182,7 @@ public class UserController {
             secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
             secondaryStage.setTitle("Overworld Map");
             secondaryStage.setScene(new Scene(root));
+            ThemeManager.getInstance().applyToStage(secondaryStage);
             secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
 
         } catch (Exception e) {
@@ -199,6 +202,7 @@ public class UserController {
             secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
             secondaryStage.setTitle("Wireless Teams");
             secondaryStage.setScene(new Scene(root));
+            ThemeManager.getInstance().applyToStage(secondaryStage);
             secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
 
         } catch (Exception e) {
@@ -218,6 +222,7 @@ public class UserController {
             secondaryStage.initModality(Modality.APPLICATION_MODAL); // Prevent interaction with other windows
             secondaryStage.setTitle("Miscellaneous Data");
             secondaryStage.setScene(new Scene(root));
+            ThemeManager.getInstance().applyToStage(secondaryStage);
             secondaryStage.showAndWait(); // Show the secondary view and wait until it's closed
 
         } catch (Exception e) {

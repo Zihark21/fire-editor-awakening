@@ -8,6 +8,7 @@ import com.danius.fireeditor.data.model.ClassModel;
 import com.danius.fireeditor.data.model.SkillModel;
 import com.danius.fireeditor.savefile.units.Unit;
 import com.danius.fireeditor.data.MiscDb;
+import com.danius.fireeditor.controllers.ThemeManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -336,6 +337,7 @@ public class SkillController {
     @FXML
     private void skillReport() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        ThemeManager.getInstance().applyToDialogPane(alert.getDialogPane());
         alert.getDialogPane().setPrefWidth(650);
         int itemsPerRow = 8;
         alert.setTitle("Legal Skills");
