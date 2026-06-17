@@ -32,7 +32,14 @@ public class UnitDu {
     public UnitDu(boolean isWest) {
         String path = Constants.RES_BLOCK + "rawUnitDu";
         try {
-            byte[] bytes = Objects.requireNonNull(UnitDu.class.getResourceAsStream(path)).readAllBytes();
+            byte[] bytes;
+            java.io.InputStream is = UnitDu.class.getResourceAsStream(path);
+            if (is != null) {
+                bytes = is.readAllBytes();
+            } else {
+                // Default empty wireless unit data when resource is unavailable
+                bytes = new byte[isWest ? 0x12F : 0xD3];
+            }
             initialize(bytes, new byte[0]);
             changeRegion(isWest);
         } catch (IOException e) {

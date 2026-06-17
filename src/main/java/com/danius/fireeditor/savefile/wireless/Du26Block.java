@@ -175,12 +175,18 @@ public class Du26Block {
             outputStream.write(unknownList.size()); //Unknown Count
             for (byte[] unknown : unknownList) outputStream.write(unknown);
             //Player's Team
-            outputStream.write(playerTeam.bytes());
+            if (playerTeam != null) {
+                outputStream.write(playerTeam.bytes());
+            } else {
+                // Write empty team data for null playerTeam
+                outputStream.write(new byte[teamSize + DuTeam.HEADER_SIZE]);
+            }
             //SpotPass
             outputStream.write(rawSpotPass);
             //Extra
             outputStream.write(rawExtra);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         return outputStream.toByteArray();
@@ -190,12 +196,18 @@ public class Du26Block {
         //Wireless Teams
         for (DuTeam team : teamList) team.changeRegion(isWest);
         //Own Team
-        playerTeam.changeRegion(isWest);
+        if (playerTeam != null) {
+            playerTeam.changeRegion(isWest);
+        }
         this.isWest = isWest;
     }
 
     public int length() {
-        return bytes().length;
+        byte[] bytes = bytes();
+        if (bytes != null) {
+            return bytes.length;
+        }
+        return 0;
     }
 }
 

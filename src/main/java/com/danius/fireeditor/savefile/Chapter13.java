@@ -200,7 +200,12 @@ public class Chapter13 extends SaveFile {
             outputStream.write(blockRefi.getBlockBytes());
             outputStream.write(blockTran.getBlockBytes());
             if (!isChapter) outputStream.write(blockMapBattle);
-            outputStream.write(blockDu26.bytes());
+            byte[] du26Bytes = blockDu26.bytes();
+            if (du26Bytes != null) {
+                outputStream.write(du26Bytes);
+            } else {
+                System.err.println("Warning: blockDu26.bytes() returned null, writing empty block");
+            }
             outputStream.write(blockEvst.bytes());
         } catch (IOException e) {
             e.printStackTrace();
