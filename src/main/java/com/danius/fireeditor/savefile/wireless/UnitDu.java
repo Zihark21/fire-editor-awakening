@@ -265,6 +265,10 @@ public class UnitDu {
         rawBlock1[point + slot] = (byte) (value & 0xFF);
     }
 
+    public void setActiveSkill(int value, int slot) {
+        setActiveSkills(value, slot);
+    }
+
     public int[] getWeaponExp() {
         int[] exp = new int[6];
         int point = 0x1B;
