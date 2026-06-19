@@ -556,7 +556,7 @@ public class UnitController {
         txtBuffRes.setText(String.valueOf(buffs[7]));
         txtBuffMove.setText(String.valueOf(Stats.getMoveBuff(unit)));
 
-        txtModif.setText(Arrays.toString(listViewUnit.getSelectionModel().getSelectedItem().modifiers()));
+        txtModif.setText(Arrays.toString(unit.modifiers()));
         txtTotalStat.setText(String.valueOf(Stats.rating(unit, checkLimit.isSelected())));
     }
 

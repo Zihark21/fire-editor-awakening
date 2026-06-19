@@ -2,55 +2,109 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="container" prefHeight="400.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.danius.fireeditor.controllers.GlobalController">
+<VBox id="container" prefHeight="420.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.danius.fireeditor.controllers.GlobalController">
 
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="476.0" prefWidth="787.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="420.0" prefWidth="750.0">
       <children>
-         <Button layoutX="545.0" layoutY="331.0" mnemonicParsing="false" onAction="#saveFile" prefHeight="49.0" prefWidth="174.0" text="Save File" />
-         <ListView fx:id="listViewUnit" layoutX="14.0" layoutY="29.0" prefHeight="354.0" prefWidth="134.0" />
-         <Label fx:id="lblUnitCount" layoutX="16.0" layoutY="7.0" prefHeight="18.0" prefWidth="133.0" text="Units" />
-         <Button fx:id="btnUp" layoutX="157.0" layoutY="324.0" mnemonicParsing="false" onAction="#orderUp" text="↑" />
-         <Button fx:id="btnDown" layoutX="157.0" layoutY="357.0" mnemonicParsing="false" onAction="#orderDown" text="↓" />
-         <Button layoutX="545.0" layoutY="259.0" mnemonicParsing="false" onAction="#unlockSupports" prefHeight="49.0" prefWidth="174.0" text="Unlock Full Support Log" />
-         <ImageView fx:id="imgBuild" fitHeight="128.0" fitWidth="128.0" layoutX="168.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@portrait/avatar_m/build_01_00.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="imgHairColor" fitHeight="128.0" fitWidth="128.0" layoutX="168.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@portrait/avatar_m/back_01_00.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="imgHair" fitHeight="128.0" fitWidth="128.0" layoutX="168.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@portrait/avatar_m/hair_01_00.png" />
-            </image>
-         </ImageView>
-         <Label fx:id="labelUnitName" layoutX="168.0" layoutY="12.0" prefHeight="27.0" prefWidth="201.0" text="Units">
-            <font>
-               <Font size="18.0" />
-            </font>
-         </Label>
-         <Label layoutX="169.0" layoutY="185.0" prefHeight="38.0" prefWidth="202.0" text="Unit Editor not Available!&#10;Load a Chapter or Map file instead." />
-         <Spinner fx:id="spinRenown" editable="true" layoutX="553.0" layoutY="201.0" prefHeight="26.0" prefWidth="84.0" />
-         <AnchorPane layoutX="545.0" layoutY="83.0" prefHeight="80.0" prefWidth="190.0">
+         <ListView fx:id="listViewUnit" layoutX="13.0" layoutY="30.0" prefHeight="298.0" prefWidth="134.0" />
+         <Label fx:id="lblUnitCount" layoutX="14.0" layoutY="5.0" prefHeight="18.0" prefWidth="133.0" text="Units" />
+
+         <!-- Global Unit Editor -->
+         <AnchorPane layoutX="151.0" layoutY="2.0" minHeight="0.0" minWidth="0.0" prefHeight="330.0" prefWidth="605.0">
+            <children>
+               <Button fx:id="btnUp" layoutX="2.0" layoutY="268.0" mnemonicParsing="false" onAction="#orderUp" text="↑" />
+               <Button fx:id="btnDown" layoutX="2.0" layoutY="300.0" mnemonicParsing="false" onAction="#orderDown" text="↓" />
+               <Label fx:id="labelUnitName" layoutX="14.0" layoutY="6.0" prefHeight="27.0" prefWidth="201.0" text="Units">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+               <Label layoutX="213.0" layoutY="7.0" text="Level" />
+               <Spinner fx:id="spinLevel" editable="true" layoutX="213.0" layoutY="29.0" prefHeight="26.0" prefWidth="55.0" />
+               <Label layoutX="310.0" layoutY="7.0" text="Class" />
+               <ComboBox fx:id="comboClass" layoutX="310.0" layoutY="29.0" prefHeight="26.0" prefWidth="133.0" promptText="Class" />
+
+               <ImageView fx:id="imgBuild" fitHeight="128.0" fitWidth="128.0" layoutX="14.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@portrait/avatar_m/build_01_00.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="imgHairColor" fitHeight="128.0" fitWidth="128.0" layoutX="14.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@portrait/avatar_m/back_01_00.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="imgHair" fitHeight="128.0" fitWidth="128.0" layoutX="14.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@portrait/avatar_m/hair_01_00.png" />
+                  </image>
+               </ImageView>
+
+               <Label layoutX="173.0" layoutY="70.0" text="Stats" />
+               <AnchorPane layoutX="207.0" layoutY="60.0" prefHeight="42.0" prefWidth="387.0">
+                  <children>
+                     <TextField fx:id="txtStatHp" disable="true" layoutX="6.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatStr" disable="true" layoutX="47.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatMag" disable="true" layoutX="88.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatSkl" disable="true" layoutX="129.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatSpd" disable="true" layoutX="170.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatLck" disable="true" layoutX="211.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatDef" disable="true" layoutX="252.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatRes" disable="true" layoutX="294.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtStatMove" disable="true" layoutX="337.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                  </children>
+               </AnchorPane>
+
+               <Label layoutX="167.0" layoutY="105.0" text="Growth" />
+               <AnchorPane layoutX="207.0" layoutY="95.0" prefHeight="42.0" prefWidth="387.0">
+                  <children>
+                     <TextField fx:id="txtGrowthHp" layoutX="6.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthStr" layoutX="47.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthMag" layoutX="88.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthSkl" layoutX="129.0" layoutY="6.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthSpd" layoutX="170.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthLck" layoutX="211.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthDef" layoutX="252.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthRes" layoutX="294.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                     <TextField fx:id="txtGrowthMove" layoutX="337.0" layoutY="7.0" prefHeight="26.0" prefWidth="34.0" text="0" />
+                  </children>
+               </AnchorPane>
+
+               <ColorPicker fx:id="colorHair" layoutX="17.0" layoutY="195.0" prefHeight="26.0" prefWidth="120.0" />
+               <Label layoutX="18.0" layoutY="175.0" text="Hair Color" />
+               <CheckBox fx:id="checkLimit" layoutX="214.0" layoutY="145.0" mnemonicParsing="false" text="Limit Breaker" />
+               <Button fx:id="btnMaxStats" layoutX="414.0" layoutY="145.0" mnemonicParsing="false" onAction="#maxGrowth" prefHeight="26.0" prefWidth="99.0" text="Max Growth" />
+
+               <Button fx:id="btnOpenSkills" layoutX="145.0" layoutY="195.0" mnemonicParsing="false" onAction="#openSkills" prefHeight="26.0" prefWidth="110.0" text="Skills" />
+               <Button fx:id="btnOpenAvatar" layoutX="263.0" layoutY="195.0" mnemonicParsing="false" onAction="#openLog" prefHeight="26.0" prefWidth="110.0" text="Avatar Data" />
+               <Button layoutX="381.0" layoutY="195.0" mnemonicParsing="false" onAction="#unlockSupports" prefHeight="26.0" prefWidth="110.0" text="Unlock Support" />
+               <Button fx:id="btnDuplicate" layoutX="45.0" layoutY="274.0" mnemonicParsing="false" onAction="#unitDuplicate" prefHeight="26.0" prefWidth="110.0" text="Duplicate" visible="false" />
+               <Button fx:id="btnRemove" layoutX="173.0" layoutY="274.0" mnemonicParsing="false" onAction="#unitDelete" prefHeight="26.0" prefWidth="110.0" text="Delete" visible="false" />
+            </children>
+         </AnchorPane>
+
+         <!-- Global controls beneath Hair Color -->
+         <AnchorPane layoutX="243.0" layoutY="235.0" prefHeight="70.0" prefWidth="190.0">
             <children>
                <CheckBox fx:id="check1" layoutX="7.0" layoutY="10.0" mnemonicParsing="false" text="Game Clear" />
                <CheckBox fx:id="check2" layoutX="7.0" layoutY="33.0" mnemonicParsing="false" text="Lunatic+ Casual Classic" />
-               <CheckBox fx:id="check3" layoutX="7.0" layoutY="56.0" mnemonicParsing="false" text="Lunatic+ Casual Only" />
+               <CheckBox fx:id="check3" layoutX="7.0" layoutY="55.0" mnemonicParsing="false" text="Lunatic+ Casual Only" />
             </children>
          </AnchorPane>
-         <Label layoutX="555.0" layoutY="180.0" text="Renown" />
+         <Label layoutX="445.0" layoutY="246.0" text="Renown" />
+         <Spinner fx:id="spinRenown" editable="true" layoutX="445.0" layoutY="264.0" prefHeight="26.0" prefWidth="84.0" />
       </children>
     </AnchorPane>
 

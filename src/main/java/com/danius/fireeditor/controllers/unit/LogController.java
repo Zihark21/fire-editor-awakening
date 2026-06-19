@@ -70,7 +70,8 @@ public class LogController {
         comboFlaw.setItems(modifiers);
         //Class
         ObservableList<String> classes = FXCollections.observableArrayList();
-        classes.addAll(getClassNames(FireEditor.chapterFile.MAX_ID_CLASS));
+        int maxClass = (FireEditor.chapterFile != null) ? FireEditor.chapterFile.MAX_ID_CLASS : 0;
+        classes.addAll(getClassNames(maxClass));
         comboClass.setItems(classes);
         //S-Pairings
         ObservableList<String> units = FXCollections.observableArrayList();
@@ -220,7 +221,9 @@ public class LogController {
         else imgHairColor.setImage(null);
         if (images[2] != null) imgHair.setImage(images[2]);
         else imgHair.setImage(null);
-        FireEditor.unitController.setImage();
+        if (FireEditor.unitController != null && FireEditor.chapterFile != null) {
+            FireEditor.unitController.setImage();
+        }
     }
 
     private void addListeners() {

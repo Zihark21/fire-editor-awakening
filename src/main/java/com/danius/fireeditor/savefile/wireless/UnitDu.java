@@ -65,13 +65,17 @@ public class UnitDu {
             offset += item.length();
         }
         //Child Data
-        this.rawChild = Arrays.copyOfRange(bytes, offset, offset + 0x8);
+        //Wireless units use 8 bytes; Global logbook units use a shorter block
+        int childSize = (extraData == null) ? (isWest ? 0x7 : 0xD) : 0x8;
+        this.rawChild = Arrays.copyOfRange(bytes, offset, offset + childSize);
         offset += rawChild.length;
         //Learned Skills
         this.rawSkill = new RawSkill(Arrays.copyOfRange(bytes, offset, offset + 0xD));
         offset += rawSkill.length();
         //Unknown
-        this.rawUnknown = Arrays.copyOfRange(bytes, offset, offset + 0x3);
+        //Logbook units have a 4-byte unknown block; wireless units use 3 bytes
+        int unknownSize = (extraData == null) ? 0x4 : 0x3;
+        this.rawUnknown = Arrays.copyOfRange(bytes, offset, offset + unknownSize);
         offset += rawUnknown.length;
         //Avatar Data (Wireless Team)
         if (extraData != null) {
@@ -108,6 +112,10 @@ public class UnitDu {
 
     public void setHeader(byte[] header) {
         this.header = header;
+    }
+
+    public byte[] getHeader() {
+        return header;
     }
 
     public String getName() {

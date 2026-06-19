@@ -213,6 +213,12 @@ public class MainController {
         }
     }
 
+    public void saveGlobal() {
+        if (FireEditor.global != null && FireEditor.globalController != null) {
+            FireEditor.globalController.saveFile();
+        }
+    }
+
     public void importUnit() {
         if (FireEditor.chapterFile == null) return;
         FileChooser fileChooser = new FileChooser();
