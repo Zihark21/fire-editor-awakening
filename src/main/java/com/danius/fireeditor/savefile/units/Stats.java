@@ -206,14 +206,22 @@ public class Stats {
         int[] growths = unit.rawBlock1.growth();
         int[] unitAddition = getUnitAddition(unit.rawBlock1.unitId()); //Hardcoded
         int[] classAddition = getClassBaseStats(unit.rawBlock1.unitClass()); //Hardcoded
-        //If it has logbook data, +2 on their asset, -2 flaw
+        //If it has logbook data, apply Avatar asset/flaw base stat modifiers
         if (unit.rawLog != null) {
             int asset = unit.rawLog.getAssetFlaw()[0];
             int flaw = unit.rawLog.getAssetFlaw()[1];
             //Asset/Flaw 0 is None, HP is 1
-            if (asset != 0) unitAddition[asset - 1] += 2;
+            //HP asset: +5 HP; HP flaw: -3 HP
+            //LCK asset: +4 LCK; LCK flaw: -2 LCK
+            //Other assets: +2; other flaws: -1
+            if (asset != 0) {
+                if (asset == 1) unitAddition[0] += 5;
+                else if (asset == 6) unitAddition[5] += 4;
+                else unitAddition[asset - 1] += 2;
+            }
             if (flaw != 0) {
-                if (flaw == 6) unitAddition[flaw - 1] -= 2;
+                if (flaw == 1) unitAddition[0] -= 3;
+                else if (flaw == 6) unitAddition[5] -= 2;
                 else unitAddition[flaw - 1] -= 1;
             }
         }
