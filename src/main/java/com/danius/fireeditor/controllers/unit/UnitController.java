@@ -509,14 +509,14 @@ public class UnitController {
             if (!Objects.equals(newValue, "") && newValue != null
                     && listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 Unit unit = listViewUnit.getSelectionModel().getSelectedItem();
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthHp.getText())), 0);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthStr.getText())), 1);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthMag.getText())), 2);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSkl.getText())), 3);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSpd.getText())), 4);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthLck.getText())), 5);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthDef.getText())), 6);
-                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthRes.getText())), 7);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthHp), 0);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthStr), 1);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthMag), 2);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthSkl), 3);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthSpd), 4);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthLck), 5);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthDef), 6);
+                unit.rawBlock1.setGrowth(UI.parseSignedTextField(txtGrowthRes), 7);
                 unit.rawBlock1.setMovement(Integer.parseInt(txtGrowthMove.getText()));
                 refreshData(listViewUnit.getSelectionModel().getSelectedItem());
             }

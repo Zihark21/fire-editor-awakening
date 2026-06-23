@@ -374,8 +374,8 @@ public class GlobalController {
     private void textStatsListeners(TextField textField, int slot) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (updatingFields) return;
-            if (!Objects.equals(newValue, "") && newValue != null
-                    && listViewUnit.getSelectionModel().getSelectedItem() != null) {
+            if (newValue == null || newValue.isEmpty() || newValue.equals("-")) return;
+            if (listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 UnitDu selected = listViewUnit.getSelectionModel().getSelectedItem();
                 int value = Integer.parseInt(newValue);
                 if (slot >= 0) selected.setGrowth(UI.toUnsigned(value), slot);
@@ -439,14 +439,14 @@ public class GlobalController {
         unitDu.setUnitClass(comboClass.getSelectionModel().getSelectedIndex());
         unitDu.setLevel(spinLevel.getValue());
         unitDu.setHairColorFx(colorHair.getValue());
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthHp.getText())), 0);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthStr.getText())), 1);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthMag.getText())), 2);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSkl.getText())), 3);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSpd.getText())), 4);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthLck.getText())), 5);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthDef.getText())), 6);
-        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthRes.getText())), 7);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthHp), 0);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthStr), 1);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthMag), 2);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthSkl), 3);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthSpd), 4);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthLck), 5);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthDef), 6);
+        unitDu.setGrowth(UI.parseSignedTextField(txtGrowthRes), 7);
         unitDu.setMovement(Integer.parseInt(txtGrowthMove.getText()));
     }
 

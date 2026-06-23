@@ -94,6 +94,12 @@ public class UI {
         return (signedValue < 0) ? signedValue + 256 : signedValue;
     }
 
+    public static int parseSignedTextField(TextField textField) {
+        String text = textField.getText();
+        if (text == null || text.isEmpty() || text.equals("-")) return 0;
+        return toUnsigned(Integer.parseInt(text));
+    }
+
     public static void setSignedNumericTextField(TextField textField, int maxValue) {
         // Add a listener to the text field to filter non-numeric input and allow signed values
         int maxSigned = maxValue / 2;
