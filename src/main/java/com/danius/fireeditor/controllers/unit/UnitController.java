@@ -116,14 +116,14 @@ public class UnitController {
         comboClass.getSelectionModel().select(unit.rawBlock1.unitClass());
         //Stats
         int[] growth = unit.rawBlock1.growth();
-        txtGrowthHp.setText(String.valueOf(growth[0]));
-        txtGrowthStr.setText(String.valueOf(growth[1]));
-        txtGrowthMag.setText(String.valueOf(growth[2]));
-        txtGrowthSkl.setText(String.valueOf(growth[3]));
-        txtGrowthSpd.setText(String.valueOf(growth[4]));
-        txtGrowthLck.setText(String.valueOf(growth[5]));
-        txtGrowthDef.setText(String.valueOf(growth[6]));
-        txtGrowthRes.setText(String.valueOf(growth[7]));
+        txtGrowthHp.setText(String.valueOf(UI.toSigned(growth[0])));
+        txtGrowthStr.setText(String.valueOf(UI.toSigned(growth[1])));
+        txtGrowthMag.setText(String.valueOf(UI.toSigned(growth[2])));
+        txtGrowthSkl.setText(String.valueOf(UI.toSigned(growth[3])));
+        txtGrowthSpd.setText(String.valueOf(UI.toSigned(growth[4])));
+        txtGrowthLck.setText(String.valueOf(UI.toSigned(growth[5])));
+        txtGrowthDef.setText(String.valueOf(UI.toSigned(growth[6])));
+        txtGrowthRes.setText(String.valueOf(UI.toSigned(growth[7])));
         checkLimit.setSelected(Stats.hasLimitBreaker(unit));
         setFieldsStats(unit);
         setImage();
@@ -363,14 +363,14 @@ public class UnitController {
         UI.setSpinnerNumeric(spinLevel, 30);
         UI.setSpinnerNumeric(spinExp, 99);
         //Growth Stats
-        UI.setNumericTextField(txtGrowthHp, 255);
-        UI.setNumericTextField(txtGrowthStr, 255);
-        UI.setNumericTextField(txtGrowthMag, 255);
-        UI.setNumericTextField(txtGrowthSkl, 255);
-        UI.setNumericTextField(txtGrowthSpd, 255);
-        UI.setNumericTextField(txtGrowthLck, 255);
-        UI.setNumericTextField(txtGrowthDef, 255);
-        UI.setNumericTextField(txtGrowthRes, 255);
+        UI.setSignedNumericTextField(txtGrowthHp, 255);
+        UI.setSignedNumericTextField(txtGrowthStr, 255);
+        UI.setSignedNumericTextField(txtGrowthMag, 255);
+        UI.setSignedNumericTextField(txtGrowthSkl, 255);
+        UI.setSignedNumericTextField(txtGrowthSpd, 255);
+        UI.setSignedNumericTextField(txtGrowthLck, 255);
+        UI.setSignedNumericTextField(txtGrowthDef, 255);
+        UI.setSignedNumericTextField(txtGrowthRes, 255);
         UI.setNumericTextField(txtGrowthMove, 255);
         //Classes
         ObservableList<String> classes = FXCollections.observableArrayList(getClassNames());
@@ -509,14 +509,14 @@ public class UnitController {
             if (!Objects.equals(newValue, "") && newValue != null
                     && listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 Unit unit = listViewUnit.getSelectionModel().getSelectedItem();
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthHp.getText()), 0);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthStr.getText()), 1);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthMag.getText()), 2);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthSkl.getText()), 3);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthSpd.getText()), 4);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthLck.getText()), 5);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthDef.getText()), 6);
-                unit.rawBlock1.setGrowth(Integer.parseInt(txtGrowthRes.getText()), 7);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthHp.getText())), 0);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthStr.getText())), 1);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthMag.getText())), 2);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSkl.getText())), 3);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSpd.getText())), 4);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthLck.getText())), 5);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthDef.getText())), 6);
+                unit.rawBlock1.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthRes.getText())), 7);
                 unit.rawBlock1.setMovement(Integer.parseInt(txtGrowthMove.getText()));
                 refreshData(listViewUnit.getSelectionModel().getSelectedItem());
             }
@@ -563,14 +563,14 @@ public class UnitController {
     public void maxGrowth() {
         listViewUnit.getSelectionModel().getSelectedItem().maxGrowth();
         int[] growth = listViewUnit.getSelectionModel().getSelectedItem().rawBlock1.growth();
-        txtGrowthHp.setText(String.valueOf(growth[0]));
-        txtGrowthStr.setText(String.valueOf(growth[1]));
-        txtGrowthMag.setText(String.valueOf(growth[2]));
-        txtGrowthSkl.setText(String.valueOf(growth[3]));
-        txtGrowthSpd.setText(String.valueOf(growth[4]));
-        txtGrowthLck.setText(String.valueOf(growth[5]));
-        txtGrowthDef.setText(String.valueOf(growth[6]));
-        txtGrowthRes.setText(String.valueOf(growth[7]));
+        txtGrowthHp.setText(String.valueOf(UI.toSigned(growth[0])));
+        txtGrowthStr.setText(String.valueOf(UI.toSigned(growth[1])));
+        txtGrowthMag.setText(String.valueOf(UI.toSigned(growth[2])));
+        txtGrowthSkl.setText(String.valueOf(UI.toSigned(growth[3])));
+        txtGrowthSpd.setText(String.valueOf(UI.toSigned(growth[4])));
+        txtGrowthLck.setText(String.valueOf(UI.toSigned(growth[5])));
+        txtGrowthDef.setText(String.valueOf(UI.toSigned(growth[6])));
+        txtGrowthRes.setText(String.valueOf(UI.toSigned(growth[7])));
         txtGrowthMove.setText(String.valueOf(2));
     }
 

@@ -37,10 +37,10 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open Save File" />
                                 <MenuItem mnemonicParsing="false" onAction="#exportComp" text="Save Compressed" />
+                                <MenuItem mnemonicParsing="false" onAction="#exportDecomp" text="Save Decompressed" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveGlobal" text="Save Global" />
                                 <!-- <MenuItem mnemonicParsing="false" onAction="#importUnit" text="Import Unit" /> -->
                                 <!-- <MenuItem mnemonicParsing="false" onAction="#exportUnit" text="Export Unit" /> -->
-                                <!-- <MenuItem mnemonicParsing="false" onAction="#exportDecomp" text="Save Decompressed" /> -->
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="View">

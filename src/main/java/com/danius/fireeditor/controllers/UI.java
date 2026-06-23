@@ -86,6 +86,45 @@ public class UI {
         });
     }
 
+    public static int toSigned(int unsignedValue) {
+        return (unsignedValue > 127) ? unsignedValue - 256 : unsignedValue;
+    }
+
+    public static int toUnsigned(int signedValue) {
+        return (signedValue < 0) ? signedValue + 256 : signedValue;
+    }
+
+    public static void setSignedNumericTextField(TextField textField, int maxValue) {
+        // Add a listener to the text field to filter non-numeric input and allow signed values
+        int maxSigned = maxValue / 2;
+        int minSigned = -(maxSigned + 1);
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals("-")) return;
+            if (!newValue.matches("-?\\d*")) {
+                textField.setText(oldValue);
+                return;
+            }
+            if (newValue.isEmpty()) return;
+            try {
+                int value = Integer.parseInt(newValue);
+                if (value < minSigned) textField.setText(String.valueOf(minSigned));
+                else if (value > maxSigned) textField.setText(String.valueOf(maxSigned));
+            } catch (NumberFormatException e) {
+                textField.setText(oldValue);
+            }
+        });
+
+        // Add a focus change listener to the text field
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                // When the field loses focus, check if it's empty or just a sign and set to 0
+                if (textField.getText().isEmpty() || textField.getText().equals("-")) {
+                    textField.setText("0");
+                }
+            }
+        });
+    }
+
 
     public static void setHexTextField(TextField textField, int maxLength) {
         // Add a listener to the text field to filter non-numeric input

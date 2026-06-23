@@ -316,14 +316,14 @@ public class GlobalController {
     private void setupElements() {
         UI.setSpinnerNumeric(spinLevel, 30);
 
-        UI.setNumericTextField(txtGrowthHp, 255);
-        UI.setNumericTextField(txtGrowthStr, 255);
-        UI.setNumericTextField(txtGrowthMag, 255);
-        UI.setNumericTextField(txtGrowthSkl, 255);
-        UI.setNumericTextField(txtGrowthSpd, 255);
-        UI.setNumericTextField(txtGrowthLck, 255);
-        UI.setNumericTextField(txtGrowthDef, 255);
-        UI.setNumericTextField(txtGrowthRes, 255);
+        UI.setSignedNumericTextField(txtGrowthHp, 255);
+        UI.setSignedNumericTextField(txtGrowthStr, 255);
+        UI.setSignedNumericTextField(txtGrowthMag, 255);
+        UI.setSignedNumericTextField(txtGrowthSkl, 255);
+        UI.setSignedNumericTextField(txtGrowthSpd, 255);
+        UI.setSignedNumericTextField(txtGrowthLck, 255);
+        UI.setSignedNumericTextField(txtGrowthDef, 255);
+        UI.setSignedNumericTextField(txtGrowthRes, 255);
         UI.setNumericTextField(txtGrowthMove, 255);
 
         ObservableList<String> classes = FXCollections.observableArrayList(ClassDb.getClassNames());
@@ -378,7 +378,7 @@ public class GlobalController {
                     && listViewUnit.getSelectionModel().getSelectedItem() != null) {
                 UnitDu selected = listViewUnit.getSelectionModel().getSelectedItem();
                 int value = Integer.parseInt(newValue);
-                if (slot >= 0) selected.setGrowth(value, slot);
+                if (slot >= 0) selected.setGrowth(UI.toUnsigned(value), slot);
                 else selected.setMovement(value);
                 setFieldsStats(selected);
             }
@@ -400,14 +400,14 @@ public class GlobalController {
             spinLevel.getValueFactory().setValue(unitDu.getLevel());
             colorHair.setValue(unitDu.getHairColorFx());
             int[] growth = unitDu.getGrowth();
-            txtGrowthHp.setText(String.valueOf(growth[0]));
-            txtGrowthStr.setText(String.valueOf(growth[1]));
-            txtGrowthMag.setText(String.valueOf(growth[2]));
-            txtGrowthSkl.setText(String.valueOf(growth[3]));
-            txtGrowthSpd.setText(String.valueOf(growth[4]));
-            txtGrowthLck.setText(String.valueOf(growth[5]));
-            txtGrowthDef.setText(String.valueOf(growth[6]));
-            txtGrowthRes.setText(String.valueOf(growth[7]));
+            txtGrowthHp.setText(String.valueOf(UI.toSigned(growth[0])));
+            txtGrowthStr.setText(String.valueOf(UI.toSigned(growth[1])));
+            txtGrowthMag.setText(String.valueOf(UI.toSigned(growth[2])));
+            txtGrowthSkl.setText(String.valueOf(UI.toSigned(growth[3])));
+            txtGrowthSpd.setText(String.valueOf(UI.toSigned(growth[4])));
+            txtGrowthLck.setText(String.valueOf(UI.toSigned(growth[5])));
+            txtGrowthDef.setText(String.valueOf(UI.toSigned(growth[6])));
+            txtGrowthRes.setText(String.valueOf(UI.toSigned(growth[7])));
             txtGrowthMove.setText(String.valueOf(unitDu.getMovement()));
             setFieldsStats(unit);
             setPortrait();
@@ -439,14 +439,14 @@ public class GlobalController {
         unitDu.setUnitClass(comboClass.getSelectionModel().getSelectedIndex());
         unitDu.setLevel(spinLevel.getValue());
         unitDu.setHairColorFx(colorHair.getValue());
-        unitDu.setGrowth(Integer.parseInt(txtGrowthHp.getText()), 0);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthStr.getText()), 1);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthMag.getText()), 2);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthSkl.getText()), 3);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthSpd.getText()), 4);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthLck.getText()), 5);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthDef.getText()), 6);
-        unitDu.setGrowth(Integer.parseInt(txtGrowthRes.getText()), 7);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthHp.getText())), 0);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthStr.getText())), 1);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthMag.getText())), 2);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSkl.getText())), 3);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthSpd.getText())), 4);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthLck.getText())), 5);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthDef.getText())), 6);
+        unitDu.setGrowth(UI.toUnsigned(Integer.parseInt(txtGrowthRes.getText())), 7);
         unitDu.setMovement(Integer.parseInt(txtGrowthMove.getText()));
     }
 
@@ -470,14 +470,14 @@ public class GlobalController {
         selected.setGrowth(growth[6], 6);
         selected.setGrowth(growth[7], 7);
         selected.setMovement(2);
-        txtGrowthHp.setText(String.valueOf(growth[0]));
-        txtGrowthStr.setText(String.valueOf(growth[1]));
-        txtGrowthMag.setText(String.valueOf(growth[2]));
-        txtGrowthSkl.setText(String.valueOf(growth[3]));
-        txtGrowthSpd.setText(String.valueOf(growth[4]));
-        txtGrowthLck.setText(String.valueOf(growth[5]));
-        txtGrowthDef.setText(String.valueOf(growth[6]));
-        txtGrowthRes.setText(String.valueOf(growth[7]));
+        txtGrowthHp.setText(String.valueOf(UI.toSigned(growth[0])));
+        txtGrowthStr.setText(String.valueOf(UI.toSigned(growth[1])));
+        txtGrowthMag.setText(String.valueOf(UI.toSigned(growth[2])));
+        txtGrowthSkl.setText(String.valueOf(UI.toSigned(growth[3])));
+        txtGrowthSpd.setText(String.valueOf(UI.toSigned(growth[4])));
+        txtGrowthLck.setText(String.valueOf(UI.toSigned(growth[5])));
+        txtGrowthDef.setText(String.valueOf(UI.toSigned(growth[6])));
+        txtGrowthRes.setText(String.valueOf(UI.toSigned(growth[7])));
         txtGrowthMove.setText(String.valueOf(2));
         setFieldsStats(selected);
     }
