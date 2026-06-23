@@ -3,7 +3,6 @@ package com.danius.fireeditor.savefile.units.mainblock;
 import com.danius.fireeditor.savefile.Constants;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.danius.fireeditor.util.Hex.*;
 

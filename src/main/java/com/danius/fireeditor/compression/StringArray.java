@@ -11,25 +11,21 @@ import java.util.HashMap;
  * @author Edgar
  */
 public class StringArray {
-    private HashMap arregloMap;
-    //private byte[] arreglo;
-    private long size;
+    private HashMap<Long, String> arregloMap;
 
     public StringArray(long length) {
-        arregloMap = new HashMap();
+        arregloMap = new HashMap<>();
         for (long i = 0; i < length; i++) {
             arregloMap.put(i, "");
         }
-        size = length;
     }
 
     public void set(long pos, String val) {
-
         arregloMap.put(pos, val);
     }
 
     public String get(long i) {
-        return arregloMap.get(i).toString();
+        return arregloMap.get(i);
     }
 
     public long length() {

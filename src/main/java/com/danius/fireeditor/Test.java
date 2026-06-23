@@ -16,13 +16,6 @@ public class Test {
 
     }
 
-    private static void printHexArray(byte[] array) {
-        for (byte b : array) {
-            System.out.printf("%02X ", b);
-        }
-        System.out.println();
-    }
-
     public static byte[] readTestFile(String saveFile) {
         String filePath = "templates/path.txt";
         try {

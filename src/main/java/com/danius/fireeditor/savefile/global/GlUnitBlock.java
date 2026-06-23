@@ -1,7 +1,6 @@
 package com.danius.fireeditor.savefile.global;
 
 import com.danius.fireeditor.savefile.units.Unit;
-import com.danius.fireeditor.savefile.units.extrablock.LogBlock;
 import com.danius.fireeditor.savefile.wireless.UnitDu;
 
 import java.io.ByteArrayOutputStream;

@@ -1,6 +1,5 @@
 package com.danius.fireeditor.savefile.units;
 
-import com.danius.fireeditor.data.ClassDb;
 import com.danius.fireeditor.data.ItemDb;
 import com.danius.fireeditor.data.model.ClassModel;
 import com.danius.fireeditor.data.model.ItemModel;

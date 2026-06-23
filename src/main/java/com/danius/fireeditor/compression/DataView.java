@@ -15,22 +15,6 @@ import java.util.logging.Logger;
  * @author Edgar
  */
 public class DataView {
-    private int offset = 0;
-    private byte[] arreglo;
-
-    public DataView(byte[] array, int offset) {
-        this.offset = offset;
-        arreglo = new byte[array.length];
-        for (int i = 0; i < array.length; i++) {
-            int part = array[i];
-            if (part < 0) {
-                part = part & 0xff;
-            }
-            arreglo[i] = (byte) part;
-        }
-
-
-    }
 
     public static long byteAsULong(byte b) {
         return ((long) b) & 0x00000000000000FFL;

@@ -9,7 +9,6 @@ public class Batch {
     /*
     Collection of cheats
      */
-    private final int[] unitGroups = new int[]{0, 3, 4}; //Playable unit groups
 
     /* Sets all supports from a unit group to a specific level */
     public static void setSupports(Chapter13 chapterFile, int groupSlot, int level) {

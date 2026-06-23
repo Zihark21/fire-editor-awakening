@@ -84,8 +84,4 @@ public class RawItem {
     public int length() {
         return bytes.length;
     }
-
-    private String byteToBinaryString(byte value) {
-        return "";
-    }
 }

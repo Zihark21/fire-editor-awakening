@@ -1,13 +1,9 @@
 package com.danius.fireeditor.data;
 
-import com.danius.fireeditor.savefile.units.mainblock.RawSupport;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.danius.fireeditor.data.UnitDb.*;
 
 public class MiscDb {
 

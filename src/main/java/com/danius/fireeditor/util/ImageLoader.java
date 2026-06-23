@@ -5,8 +5,6 @@ import com.danius.fireeditor.savefile.Constants;
 import javafx.scene.image.Image;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

@@ -3,12 +3,10 @@ package com.danius.fireeditor.savefile.units.mainblock;
 import com.danius.fireeditor.data.SkillDb;
 import com.danius.fireeditor.data.model.SkillModel;
 import com.danius.fireeditor.savefile.Constants;
-import com.danius.fireeditor.data.MiscDb;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class RawSkill {
 

@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 import static com.danius.fireeditor.util.Hex.*;

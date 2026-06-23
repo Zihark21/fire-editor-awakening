@@ -4,7 +4,6 @@ import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.controllers.UI;
 import com.danius.fireeditor.savefile.inventory.Refinement;
 import com.danius.fireeditor.savefile.units.Unit;
-import com.danius.fireeditor.savefile.units.mainblock.RawItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,7 +21,6 @@ public class ItemController {
 
     private Unit unit;
     private List<Refinement> refiList;
-    private int maxCount;
 
     @FXML
     private ComboBox<String> comboItem1, comboItem2, comboItem3, comboItem4, comboItem5;

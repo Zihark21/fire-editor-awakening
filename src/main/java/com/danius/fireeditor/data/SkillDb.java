@@ -41,7 +41,6 @@ public class SkillDb {
     Skills exclusive to the mother by last skill slot
      */
     public static List<SkillModel> getLegalSkills(Unit unit) {
-        List<Integer> currentSkills = unit.rawSkill.getLearnedSkills();
         List<SkillModel> allSkills = new ArrayList<>();
 
         //Base classes skills
@@ -53,9 +52,6 @@ public class SkillDb {
 
         //Child inheritance skills
         List<SkillModel> inheritClassSkills = getExclusiveInheritClassSkills(unit);
-        //Last Skill Slot exclusive skills (CANNOT BE GOTTEN BY ANY OTHER MEANS)
-        List<SkillModel> inheritExclusiveFather = getExclusiveInheritSlotSkills(unit, 0);
-        List<SkillModel> inheritExclusiveMother = getExclusiveInheritSlotSkills(unit, 1);
 
         //All the skills are set
         allSkills.addAll(classSkills);
@@ -188,57 +184,10 @@ public class SkillDb {
         return removeDuplicates(childClassesSkills);
     }
 
-    //Retrieves ALL the skills that can be passed through last skill slot inheritance
-    private static List<SkillModel> getSlotInheritSkills(Unit unit, int parentSlot) {
-        List<SkillModel> fatherSkills = new ArrayList<>();
-        boolean unitFemale = unit.isFemale();
-
-        //First, the skills from the base class of the parent and grandparents are retrieved
-        RawParent rawParent = unit.rawChild.getRawParent(parentSlot);
-        for (int i = 0; i < 3; i++) {
-            int parent = rawParent.parentId(i);
-            if (parent == 0xFFFF) continue;
-
-            //For this purpose, un-inheritable classes are not removed
-            //Since this is last skill slot, the parent's gender class set is retrieved
-            List<ClassModel> parentClasses = ClassDb.getUnitBaseClasses(parent, UnitDb.isUnitFemale(parent));
-            //BUT if the class is item AND cannot be inherited, then it is removed
-            parentClasses.removeIf(model -> model.isDlc() && !model.canBeInherited());
-
-            //The skills from each class and personal skills are retrieved and sorted by ID
-            List<SkillModel> parentClassesSkills = getSkillsFromClasses(parentClasses);
-            parentClassesSkills.addAll(getPersonalSkills(parent));
-            parentClassesSkills.removeIf(model -> !model.isInherit()); //Remove un-inheritable skills
-            parentClassesSkills = removeDuplicates(parentClassesSkills);
-
-            fatherSkills.addAll(parentClassesSkills);
-        }
-
-        //The trait flags from the parent and grandparents are mixed
-        List<Integer> fatherFlags = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            int parent = rawParent.parentId(i);
-            fatherFlags.addAll(UnitDb.getUnitFlags(parent));
-        }
-
-        //Cool, then, check if the 2 parents have forcing skills
-        //It will retrieve the FIRST forced skill based on skill ID
-        SkillModel forcedFather = getForcedInheritSkill(fatherSkills, fatherFlags, unitFemale);
-
-        //Ok, if a forced skill was found remove everything that was retrieved earlier lol
-        if (forcedFather != null) {
-            fatherSkills = new ArrayList<>();
-            fatherSkills.add(forcedFather);
-        }
-
-        return removeDuplicates(fatherSkills);
-    }
-    
     //Retrieves ALL the skills that can be passed through last skill slot inheritance (without forced skill filtering)
     //Used for dropdown population to show all available skills, not just the forced one
     private static List<SkillModel> getSlotInheritSkillsWithoutForce(Unit unit, int parentSlot) {
         List<SkillModel> fatherSkills = new ArrayList<>();
-        boolean unitFemale = unit.isFemale();
         
         //First, the skills from the base class of the parent and grandparents are retrieved
         RawParent rawParent = unit.rawChild.getRawParent(parentSlot);
@@ -304,17 +253,12 @@ public class SkillDb {
         return skillForced;
     }
 
-    private static boolean isInvalid(int id) {
-        return id < 0 || id >= getSkillCount();
-    }
-
     public static int getSkillCount() {
         return database.skillList.size();
     }
 
     /* Removes duplicated skills and sort them by ID */
     private static List<SkillModel> removeDuplicates(List<SkillModel> classList) {
-        Set<Integer> seenIds = new HashSet<>();
         Map<Integer, SkillModel> uniqueSkillsMap = new HashMap<>();
 
         for (SkillModel skillModel : classList) {

@@ -1,13 +1,10 @@
 package com.danius.fireeditor.controllers.unit;
  
 import com.danius.fireeditor.FireEditor;
-import com.danius.fireeditor.data.ClassDb;
 import com.danius.fireeditor.data.SkillDb;
 import com.danius.fireeditor.data.UnitDb;
-import com.danius.fireeditor.data.model.ClassModel;
 import com.danius.fireeditor.data.model.SkillModel;
 import com.danius.fireeditor.savefile.units.Unit;
-import com.danius.fireeditor.data.MiscDb;
 import com.danius.fireeditor.controllers.ThemeManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

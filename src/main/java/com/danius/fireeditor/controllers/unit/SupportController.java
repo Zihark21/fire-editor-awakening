@@ -2,7 +2,6 @@ package com.danius.fireeditor.controllers.unit;
 
 import com.danius.fireeditor.controllers.UI;
 import com.danius.fireeditor.savefile.units.Unit;
-import com.danius.fireeditor.data.MiscDb;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

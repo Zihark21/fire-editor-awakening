@@ -39,8 +39,6 @@ public class Huffman {
         ///console.log(s.byteLength+" byte length");
         Uint8Array u = new Uint8Array(s);
 //System.out.println("Uint8 array created");
-        //long i = u.length();
-        StringArray a = new StringArray(u.length());
 
 //System.out.println("String array created");
         //DataView dv = new DataView(s, 0);
@@ -153,7 +151,6 @@ public class Huffman {
         //return Uncompressed;
         ///console.log(a);
         u = null;
-        a = null;
 
 
         //var byteArray=getByteArrayFromString(s);
@@ -484,11 +481,11 @@ public class Huffman {
 
             if (root.lson.leafs <= root.rson.leafs) {
                 int l_leafs = HUF_CreateCodeBranch(root.lson, q, q + 2);
-                int r_leafs = HUF_CreateCodeBranch(root.rson, q + 1, q + (l_leafs << 1));
+                HUF_CreateCodeBranch(root.rson, q + 1, q + (l_leafs << 1));
                 codetree[q + 1] = (byte) (l_leafs - 1);
             } else {
                 int r_leafs = HUF_CreateCodeBranch(root.rson, q + 1, q + 2);
-                int l_leafs = HUF_CreateCodeBranch(root.lson, q, q + (r_leafs << 1));
+                HUF_CreateCodeBranch(root.lson, q, q + (r_leafs << 1));
                 codetree[q] = (byte) (r_leafs - 1);
             }
         }

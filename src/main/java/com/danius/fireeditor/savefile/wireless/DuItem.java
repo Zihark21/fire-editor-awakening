@@ -2,7 +2,6 @@ package com.danius.fireeditor.savefile.wireless;
 
 import com.danius.fireeditor.savefile.inventory.Refinement;
 import com.danius.fireeditor.util.Hex;
-import javafx.scene.layout.Region;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

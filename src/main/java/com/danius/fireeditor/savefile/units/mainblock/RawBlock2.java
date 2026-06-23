@@ -2,13 +2,11 @@ package com.danius.fireeditor.savefile.units.mainblock;
 
 import com.danius.fireeditor.data.SkillDb;
 import com.danius.fireeditor.savefile.Constants;
-import com.danius.fireeditor.data.MiscDb;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class RawBlock2 {
     private byte[] skills; //Equipped Skills

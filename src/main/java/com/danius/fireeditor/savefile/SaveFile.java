@@ -47,7 +47,7 @@ public abstract class SaveFile {
     }
 
     public static boolean isChapter(byte[] fileBytes) {
-        byte[] decrypt = autoDecompress(fileBytes.clone());
+        autoDecompress(fileBytes.clone());
         return sizeHeader != 0x0;
     }
 

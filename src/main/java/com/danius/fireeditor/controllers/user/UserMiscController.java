@@ -1,6 +1,5 @@
 package com.danius.fireeditor.controllers.user;
 
-import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.controllers.UI;
 import com.danius.fireeditor.data.MiscDb;
 import com.danius.fireeditor.savefile.user.UserBlock;
@@ -14,7 +13,6 @@ import javafx.scene.control.Spinner;
 
 public class UserMiscController {
 
-    private UserBlock userBlock;
     private Du26Block du26Block;
     @FXML
     private ComboBox<String> comboChapterDlc, comboDuelNames;
@@ -30,7 +28,6 @@ public class UserMiscController {
     }
 
     public void setBlocks(UserBlock userBlock, Du26Block du26Block) {
-        this.userBlock = userBlock;
         this.du26Block = du26Block;
 
         comboChapterDlc.getSelectionModel().select(0);

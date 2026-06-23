@@ -14,7 +14,6 @@ public class UserBlock {
 
     public static final int SIZE_BLOCK = 0xEE; //+1 on JP
     public static final int SIZE_MAP = 0x10;
-    private boolean isWest = true;
     private final byte[] header;
     private final byte[] rawBlock1; //??
     public List<RawProgress> progress; //Chapter List
@@ -28,7 +27,6 @@ public class UserBlock {
         int extraByte = 0;
         if ((blockBytes[0x15] & 0xFF) != chapters && (blockBytes[0x16] & 0xFF) == chapters) {
             extraByte = 1;
-            this.isWest = false;
         }
         //The blocks are split
         header = Arrays.copyOfRange(blockBytes, 0x0, 0x5);
@@ -270,16 +268,6 @@ public class UserBlock {
 
     public String report() {
         String report = "";
-        //Playtime calculation
-        int frames = playtime();
-        int frameRate = 60;
-        int hours = frames / (frameRate * 60 * 60);
-        frames %= (frameRate * 60 * 60);
-        int minutes = frames / (frameRate * 60);
-        frames %= (frameRate * 60);
-        int seconds = frames / frameRate;
-        int remainingFrames = frames % frameRate;
-        //report += "\n" + "Playtime: " + hours + ":" + minutes + ":" + seconds;
         //Story Progress
         report += "\n" + "Chapters Beaten: " + progress.size();
         report += "\n" + "Chapter Count: " + getCountTotalChapters() + " " +

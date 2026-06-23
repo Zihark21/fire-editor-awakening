@@ -1,6 +1,5 @@
 package com.danius.fireeditor.savefile.wireless;
 
-import com.danius.fireeditor.savefile.units.Unit;
 import com.danius.fireeditor.savefile.units.extrablock.LogBlock;
 import com.danius.fireeditor.util.Hex;
 

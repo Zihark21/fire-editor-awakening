@@ -14,7 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 public class OtherController {
     private Unit unit;
@@ -127,25 +128,25 @@ public class OtherController {
         setWeaponSpinListener(spinStave, 5);
 
         //AI
-        Spinner<Integer>[] aiType = new Spinner[]{spinAction, spinMission, spinAttack, spinMove};
+        List<Spinner<Integer>> aiType = Arrays.asList(spinAction, spinMission, spinAttack, spinMove);
         Label[] aiLabel = new Label[]{lblAction, lblMission, lblAttack, lblMove};
-        action = new Spinner[]{spinAction1, spinAction2, spinAction3, spinAction4};
-        mission = new Spinner[]{spinMission1, spinMission2, spinMission3, spinMission4};
-        attack = new Spinner[]{spinAttack1, spinAttack2, spinAttack3, spinAttack4};
-        move = new Spinner[]{spinMove1, spinMove2, spinMove3, spinMove4};
+        action = Arrays.asList(spinAction1, spinAction2, spinAction3, spinAction4);
+        mission = Arrays.asList(spinMission1, spinMission2, spinMission3, spinMission4);
+        attack = Arrays.asList(spinAttack1, spinAttack2, spinAttack3, spinAttack4);
+        move = Arrays.asList(spinMove1, spinMove2, spinMove3, spinMove4);
         for (int i = 0; i < 4; i++) {
             //AI Type
-            UI.setSpinnerNumeric(aiType[i], 255);
-            setupAiListener(aiType[i], i, aiLabel[i]);
+            UI.setSpinnerNumeric(aiType.get(i), 255);
+            setupAiListener(aiType.get(i), i, aiLabel[i]);
             //Parameters
-            UI.setSpinnerNumeric(action[i], 0xFFFF);
-            UI.setSpinnerNumeric(mission[i], 0xFFFF);
-            UI.setSpinnerNumeric(attack[i], 0xFFFF);
-            UI.setSpinnerNumeric(move[i], 0xFFFF);
-            setupAiParamListener(action[i], 0, i);
-            setupAiParamListener(mission[i], 1, i);
-            setupAiParamListener(attack[i], 2, i);
-            setupAiParamListener(move[i], 3, i);
+            UI.setSpinnerNumeric(action.get(i), 0xFFFF);
+            UI.setSpinnerNumeric(mission.get(i), 0xFFFF);
+            UI.setSpinnerNumeric(attack.get(i), 0xFFFF);
+            UI.setSpinnerNumeric(move.get(i), 0xFFFF);
+            setupAiParamListener(action.get(i), 0, i);
+            setupAiParamListener(mission.get(i), 1, i);
+            setupAiParamListener(attack.get(i), 2, i);
+            setupAiParamListener(move.get(i), 3, i);
         }
 
     }
@@ -244,7 +245,7 @@ public class OtherController {
     private Label lblAction, lblMission, lblAttack, lblMove;
     @FXML
     private TextField txtEndSection;
-    private Spinner<Integer>[] action, mission, attack, move;
+    private List<Spinner<Integer>> action, mission, attack, move;
 
     public void setAiFields() {
         spinAction.getValueFactory().setValue(unit.rawBlockEnd.aiType(0));
@@ -254,10 +255,10 @@ public class OtherController {
         txtEndSection.setText(unit.rawBlockEnd.endSectionString());
         Label[] aiLabel = new Label[]{lblAction, lblMission, lblAttack, lblMove};
         for (int i = 0; i < 4; i++) {
-            action[i].getValueFactory().setValue(unit.rawBlockEnd.aiParam(0, i));
-            mission[i].getValueFactory().setValue(unit.rawBlockEnd.aiParam(1, i));
-            attack[i].getValueFactory().setValue(unit.rawBlockEnd.aiParam(2, i));
-            move[i].getValueFactory().setValue(unit.rawBlockEnd.aiParam(3, i));
+            action.get(i).getValueFactory().setValue(unit.rawBlockEnd.aiParam(0, i));
+            mission.get(i).getValueFactory().setValue(unit.rawBlockEnd.aiParam(1, i));
+            attack.get(i).getValueFactory().setValue(unit.rawBlockEnd.aiParam(2, i));
+            move.get(i).getValueFactory().setValue(unit.rawBlockEnd.aiParam(3, i));
 
             switch (i) {
                 case 0 -> aiLabel[i].setText(MiscDb.getAiAction(unit.rawBlockEnd.aiType(i)));

@@ -11,33 +11,24 @@ import java.util.HashMap;
  * @author Edgar
  */
 public class Uint8Array {
-    private HashMap arregloMap;
-    //private byte[] arreglo;
-    private long size;
+    private HashMap<Long, Number> arregloMap;
 
     public Uint8Array(long length) {
-        arregloMap = new HashMap();
+        arregloMap = new HashMap<>();
         for (long i = 0; i < length; i++) {
             arregloMap.put(i, 0);
         }
-        size = length;
     }
 
     public Uint8Array(byte[] s) {
-        arregloMap = new HashMap();
-
-        //arreglo=new byte[s.length];
+        arregloMap = new HashMap<>();
         for (long i = 0; i < s.length; i++) {
             int part = s[(int) i];
             if (part < 0) {
                 part = part & 0xff;
             }
             arregloMap.put(i, part);
-
-            //arreglo[i]=(byte)part;
         }
-        size = s.length;
-
     }
 
     public void set(long pos, long val) {
@@ -48,7 +39,7 @@ public class Uint8Array {
     }
 
     public long get(long i) {
-        return Long.parseLong(arregloMap.get(i).toString());
+        return arregloMap.get(i).longValue();
     }
 
     public long length() {

@@ -94,20 +94,8 @@ public class ChapterDb {
         return names;
     }
 
-    private static int overWorldCount() {
-        int count = 0;
-        for (ChapterModel chapterModel : database.chapterList) {
-            if (chapterModel.getMapId() != -1) count++;
-        }
-        return count;
-    }
-
     private static boolean isInvalid(int chapterId) {
         return chapterId < 0 || chapterId >= MAX_CHAPTER_COUNT;
-    }
-
-    private static int chapterCount() {
-        return database.chapterList.size();
     }
 
 
