@@ -3,6 +3,7 @@ package com.danius.fireeditor.controllers;
 import com.danius.fireeditor.FireEditor;
 import com.danius.fireeditor.controllers.unit.LogController;
 import com.danius.fireeditor.controllers.unit.SkillController;
+import com.danius.fireeditor.controllers.unit.WeaponRankController;
 import com.danius.fireeditor.data.ClassDb;
 import com.danius.fireeditor.savefile.Constants;
 import com.danius.fireeditor.savefile.global.Global;
@@ -60,7 +61,7 @@ public class GlobalController {
     @FXML
     private CheckBox checkLimit;
     @FXML
-    private Button btnMaxStats, btnOpenSkills, btnOpenAvatar, btnDuplicate, btnRemove;
+    private Button btnMaxStats, btnOpenSkills, btnOpenWeaponRanks, btnOpenAvatar, btnDuplicate, btnRemove;
 
     private boolean updatingFields = false;
 
@@ -540,6 +541,7 @@ public class GlobalController {
         txtGrowthMove.setDisable(disable);
         btnMaxStats.setDisable(disable);
         btnOpenSkills.setDisable(disable);
+        btnOpenWeaponRanks.setDisable(disable);
         btnOpenAvatar.setDisable(disable);
         btnDuplicate.setDisable(disable);
         btnRemove.setDisable(disable);
@@ -597,6 +599,33 @@ public class GlobalController {
                 secondaryStage.showAndWait();
                 //Reload the logbook-dependent fields in case the avatar name changed
                 setFields(selectedDu);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openWeaponRanks(ActionEvent event) {
+        try {
+            UnitDu selectedDu = listViewUnit.getSelectionModel().getSelectedItem();
+            if (selectedDu != null) {
+                updateUnitFromFields(selectedDu);
+                Unit selectedValue = selectedDu.toUnit();
+                FXMLLoader fxmlLoader = MainController.getWindowUnit("viewWeaponRanks");
+                Parent root = fxmlLoader.load();
+                WeaponRankController weaponRankController = fxmlLoader.getController();
+                weaponRankController.setUnit(selectedValue);
+                Stage secondaryStage = new Stage();
+                secondaryStage.initModality(Modality.APPLICATION_MODAL);
+                secondaryStage.setTitle("Weapon Ranks");
+                secondaryStage.setScene(new Scene(root));
+                ThemeManager.getInstance().applyToStage(secondaryStage);
+                secondaryStage.showAndWait();
+                //Write the weapon experience back to the logbook unit
+                int[] weaponExp = selectedValue.rawBlock2.getWeaponExp();
+                for (int i = 0; i < weaponExp.length; i++) {
+                    selectedDu.setWeaponExp(weaponExp[i], i);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

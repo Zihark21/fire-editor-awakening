@@ -88,8 +88,8 @@
                <Button fx:id="btnMaxStats" layoutX="414.0" layoutY="145.0" mnemonicParsing="false" onAction="#maxGrowth" prefHeight="26.0" prefWidth="99.0" text="Max Growth" />
 
                <Button fx:id="btnOpenSkills" layoutX="145.0" layoutY="195.0" mnemonicParsing="false" onAction="#openSkills" prefHeight="26.0" prefWidth="110.0" text="Skills" />
-               <Button fx:id="btnOpenAvatar" layoutX="263.0" layoutY="195.0" mnemonicParsing="false" onAction="#openLog" prefHeight="26.0" prefWidth="110.0" text="Avatar Data" />
-               <Button layoutX="381.0" layoutY="195.0" mnemonicParsing="false" onAction="#unlockSupports" prefHeight="26.0" prefWidth="110.0" text="Unlock Support" />
+               <Button fx:id="btnOpenWeaponRanks" layoutX="263.0" layoutY="195.0" mnemonicParsing="false" onAction="#openWeaponRanks" prefHeight="26.0" prefWidth="110.0" text="Weapon Ranks" />
+               <Button fx:id="btnOpenAvatar" layoutX="381.0" layoutY="195.0" mnemonicParsing="false" onAction="#openLog" prefHeight="26.0" prefWidth="110.0" text="Avatar Data" />
                <Button fx:id="btnDuplicate" layoutX="45.0" layoutY="274.0" mnemonicParsing="false" onAction="#unitDuplicate" prefHeight="26.0" prefWidth="110.0" text="Duplicate" visible="false" />
                <Button fx:id="btnRemove" layoutX="173.0" layoutY="274.0" mnemonicParsing="false" onAction="#unitDelete" prefHeight="26.0" prefWidth="110.0" text="Delete" visible="false" />
             </children>
@@ -105,6 +105,7 @@
          </AnchorPane>
          <Label layoutX="445.0" layoutY="246.0" text="Renown" />
          <Spinner fx:id="spinRenown" editable="true" layoutX="445.0" layoutY="264.0" prefHeight="26.0" prefWidth="84.0" />
+         <Button layoutX="540.0" layoutY="264.0" mnemonicParsing="false" onAction="#unlockSupports" prefHeight="26.0" prefWidth="110.0" text="Unlock Support" />
       </children>
     </AnchorPane>
 
